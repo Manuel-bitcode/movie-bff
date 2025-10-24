@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Movie } from '../types/movie.types';
 
 // Mock data - Reemplazar con llamadas a base de datos o API externa
-let movies: Movie[] = [
+const movies: Movie[] = [
   {
     id: 1,
     title: 'The Shawshank Redemption',
@@ -21,7 +21,7 @@ let movies: Movie[] = [
 
 // Obtener todas las películas
 export const getAllMovies = async (
-  req: Request,
+  _req: Request,
   res: Response<any>,
   next: NextFunction
 ): Promise<void> => {

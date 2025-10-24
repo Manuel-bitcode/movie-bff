@@ -2,11 +2,42 @@ version: '3.8'
 
 services:
   app:
+    # Nombre del contenedor (aparece en 'docker ps')
     container_name: movie-bff
-    build: .
+    
+    # Configuración de construcción de la imagen
+    build: 
+      context: .              # Usa el directorio actual como contexto
+      dockerfile: Dockerfile  # Archivo Dockerfile a usar
+    
+    # Mapeo de puertos: host:contenedor
+    # ${PORT:-3000} significa: usa variable PORT del .env, si no existe usa 3000
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
+    
+    # Variables de entorno que se pasan al contenedor
     environment:
-      - PORT=3000
-      - NODE_ENV=production
+      - PORT=${PORT:-3000}              # Puerto de la aplicación (default: 3000)
+      - NODE_ENV=${NODE_ENV:-production} # Entorno de Node.js (default: production)
+      - API_KEY=${API_KEY:-}             # API Key opcional (default: vacío)
+    
+    # Política de reinicio: se reinicia automáticamente si falla
+    # Opciones: "no", "always", "on-failure", "unless-stopped"
+    restart: unless-stopped
+    
+    # Health Check: verifica que la aplicación esté funcionando
+    healthcheck:
+      # Comando que ejecuta para verificar salud (debe retornar 0 si OK)
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s      # Cada cuánto tiempo verifica (cada 30 segundos)
+      timeout: 10s       # Tiempo máximo de espera por respuesta
+      retries: 3         # Intentos antes de marcar como "unhealthy"
+      start_period: 40s  # Tiempo de gracia inicial antes de empezar a verificar
+    
+    # Configuración de logs para evitar que crezcan infinitamente
+    logging:
+      driver: "json-file"  # Tipo de driver de logs
+      options:
+        max-size: "10m"    # Tamaño máximo por archivo de log (10 megabytes)
+        max-file: "3"      # Número máximo de archivos de log (mantiene 3)
 

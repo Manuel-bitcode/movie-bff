@@ -31,9 +31,11 @@ movie-bff/
 │   └── types/
 │       └── movie.types.ts        # Tipos e interfaces TypeScript
 ├── dist/                         # Código compilado (generado)
-├── Dockerfile                    # Configuración Docker
-├── docker-compose.yml            # Orquestación Docker
+├── Dockerfile                    # Configuración Docker (comentado)
+├── docker-compose.yml            # Orquestación Docker (comentado)
 ├── .dockerignore                 # Exclusiones Docker
+├── .eslintrc.json                # Configuración de ESLint
+├── .eslintignore                 # Exclusiones de ESLint
 ├── .env.example                  # Variables de entorno ejemplo
 ├── .nvmrc                        # Versión de Node.js
 ├── .gitignore
@@ -63,8 +65,14 @@ El servidor estará en `http://localhost:3000`
 ### Opción 2: Con Docker
 
 ```bash
-# Levantar con Docker Compose
+# IMPORTANTE: Validar código antes de construir Docker
+npm run validate
+
+# Si no hay errores, levantar con Docker
 npm run docker:up
+
+# O usar el comando combinado (valida + construye)
+npm run docker:build
 
 # Detener
 npm run docker:down
@@ -72,17 +80,47 @@ npm run docker:down
 
 El servidor estará en `http://localhost:3000`
 
+### ⚠️ Validar antes de Docker
+
+**Siempre ejecuta antes:**
+```bash
+npm run validate
+```
+
+Esto ejecuta:
+1. **ESLint** - Detecta errores de código y estilo
+2. **TypeScript** - Verifica tipos y compilación
+
+Todo **sin** construir la imagen Docker (mucho más rápido ⚡)
+
 ## 💻 Scripts Disponibles
 
 | Script | Descripción |
 |--------|-------------|
 | `npm run dev` | Desarrollo local con hot-reload |
-| `npm run build` | Compilar TypeScript |
+| `npm run build` | Compilar TypeScript a JavaScript |
+| `npm run build:check` | Verificar errores de TypeScript |
+| `npm run lint` | ✅ Analizar código con ESLint |
+| `npm run lint:fix` | ✅ Arreglar errores automáticamente |
+| `npm run validate` | ✅ Lint + TypeCheck (antes de Docker) |
 | `npm start` | Ejecutar versión compilada |
-| `npm run docker:up` | Levantar con Docker |
+| `npm run docker:build` | Validar + construir imagen Docker |
+| `npm run docker:up` | Levantar con Docker (background) |
 | `npm run docker:down` | Detener Docker |
+| `npm run docker:logs` | Ver logs en tiempo real |
+| `npm run docker:ps` | Ver estado del contenedor |
 
 ## 📍 API Endpoints
+
+### Ruta Principal (Redirección)
+```http
+GET /
+```
+**Comportamiento:**
+- Redirige automáticamente a `/api/movies`
+- Código de estado: `302 Found`
+
+---
 
 ### Health Check
 ```http
@@ -124,24 +162,103 @@ GET /api/movies
 
 ---
 
-## 🐳 Docker (Básico)
+## 🐳 Docker
 
 ### Archivos incluidos:
-- `Dockerfile` - Define cómo construir la imagen
-- `docker-compose.yml` - Orquestación simple
+- `Dockerfile` - Define cómo construir la imagen (con comentarios explicativos)
+- `docker-compose.yml` - Orquestación con mejoras (comentado línea por línea)
 - `.dockerignore` - Archivos a excluir
+
+### Características:
+✅ **Restart automático** - Si el contenedor falla, se reinicia  
+✅ **Health check** - Verifica que la API responda cada 30s  
+✅ **Variables de entorno** - Usa archivo `.env` si existe  
+✅ **Logs rotados** - Máximo 10MB por archivo, 3 archivos  
 
 ### Uso básico:
 
 ```bash
-# Levantar
-docker-compose up
+# Levantar (en background)
+docker-compose up -d
 
-# Detener (Ctrl+C o en otra terminal)
+# Ver logs en tiempo real
+docker-compose logs -f
+
+# Ver estado y health
+docker-compose ps
+
+# Detener
 docker-compose down
 
 # Reconstruir después de cambios
-docker-compose up --build
+docker-compose up --build -d
+```
+
+### Variables de entorno (opcional):
+
+Crea un archivo `.env` en la raíz:
+```env
+PORT=3000
+NODE_ENV=production
+API_KEY=tu_api_key_aqui
+```
+
+---
+
+## 🔍 Detectar Errores Antes de Docker
+
+### ✅ Método 1: Validación Completa (Recomendado)
+```bash
+npm run validate
+```
+**Qué hace:**
+- ✅ Ejecuta ESLint (detecta errores de código)
+- ✅ Ejecuta TypeScript check (verifica tipos)
+- ⚡ Rápido (no compila, solo verifica)
+
+### 🔧 Método 2: Solo ESLint
+```bash
+# Ver errores
+npm run lint
+
+# Arreglar automáticamente
+npm run lint:fix
+```
+**Detecta:**
+- Variables no usadas (como `req`, `next`)
+- Uso de `any`
+- Errores de sintaxis
+- Problemas de estilo
+
+### 📝 Método 3: Solo TypeScript
+```bash
+npm run build:check
+```
+**Detecta:**
+- Errores de tipos
+- Imports incorrectos
+- Problemas de compilación
+
+### 💻 Método 4: Desarrollo en tiempo real
+```bash
+npm run dev
+```
+- TypeScript verifica mientras editas
+- Errores aparecen en consola inmediatamente
+
+### 📋 Checklist Antes de Docker
+
+```bash
+# 1. Validar código
+npm run validate
+
+# 2. Si hay errores de estilo, arreglarlos
+npm run lint:fix
+
+# 3. Si todo está OK, construir Docker
+npm run docker:build
+# O directamente:
+npm run docker:up
 ```
 
 ---
@@ -160,6 +277,7 @@ docker-compose up --build
 ### Herramientas de Desarrollo
 - **ts-node-dev** - Auto-reload para desarrollo
 - **TypeScript Compiler** - Compilación a JavaScript
+- **ESLint** - Análisis de código y detección de errores
 - **Docker** (opcional) - Contenerización
 
 ---
