@@ -9,7 +9,7 @@ interface HealthResponse {
 }
 
 // Health check endpoint
-router.get('/', (req: Request, res: Response<HealthResponse>) => {
+router.get('/', (_req: Request, res: Response<HealthResponse>) => {
   res.status(200).json({
     status: 'OK',
     timestamp: new Date().toISOString(),
