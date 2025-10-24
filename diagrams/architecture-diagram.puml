@@ -1,0 +1,168 @@
+@startuml architecture-diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+
+title Movie BFF - Arquitectura del Sistema\nFrontend + Backend (BFF) + PostgreSQL + API Externa
+
+' ====================================
+' CAPAS DE ARQUITECTURA
+' ====================================
+package "Frontend (React/Vue)" #E3F2FD {
+    [Componente\nListado de Películas] as movieList
+    [Componente\nBotón Like] as likeButton
+    [Componente\nContador Global] as globalCounter
+    [Estado\nGlobal] as state
+}
+
+package "Backend BFF (Node.js + Express + TypeScript)" #E8F5E9 {
+    package "Routes Layer" #C8E6C9 {
+        [movieRoutes] as movieRoutes
+        [likeRoutes] as likeRoutes
+        [globalRoutes] as globalRoutes
+        [healthRoutes] as healthRoutes
+    }
+    
+    package "Controllers Layer" #A5D6A7 {
+        [movieController] as movieCtrl
+        [likeController] as likeCtrl
+    }
+    
+    package "Services Layer" #81C784 {
+        [movieApiService] as apiService
+    }
+    
+    package "Models Layer" #66BB6A {
+        [LikeModel] as likeModel
+    }
+    
+    package "Config Layer" #4CAF50 {
+        [database.ts\nPool] as dbConfig
+        [config.ts] as config
+    }
+    
+    package "Middlewares" #81C784 {
+        [CORS] as cors
+        [Validator] as validator
+        [Error Handler] as errorHandler
+    }
+}
+
+package "Data Layer" {
+    database "PostgreSQL 16\n(Docker)" #FFF9C4 {
+        storage "movie_likes\n(id, imdb_id, likes_count)" as table
+        storage "Volumes\npersistentes" as volumes
+    }
+    
+    cloud "API Externa\n(OMDB/TMDB)" #FFECB3 {
+        [Películas\nDatabase] as extDb
+    }
+}
+
+' ====================================
+' CONEXIONES FRONTEND → BACKEND
+' ====================================
+movieList -down-> movieRoutes : GET /api/movies?search=query\n(HTTP Request)
+likeButton -down-> likeRoutes : POST /api/movies/:imdbId/like
+globalCounter -down-> globalRoutes : GET /api/likes/total
+state -down-> healthRoutes : GET /health
+
+' ====================================
+' CONEXIONES ROUTES → CONTROLLERS
+' ====================================
+movieRoutes -down-> movieCtrl : searchMovies()
+likeRoutes -down-> likeCtrl : likeMovie(), getMovieLikes()
+globalRoutes -down-> likeCtrl : getTotalLikes()
+
+' ====================================
+' CONEXIONES CONTROLLERS → SERVICES/MODELS
+' ====================================
+movieCtrl -down-> apiService : searchMovies(query)
+movieCtrl -down-> likeModel : getBulkLikes(imdbIds[])
+likeCtrl -down-> likeModel : incrementLike()\ngetLikes()\ngetTotalLikes()
+
+' ====================================
+' CONEXIONES SERVICES → API EXTERNA
+' ====================================
+apiService -right-> extDb : HTTP GET\nAxios
+
+' ====================================
+' CONEXIONES MODELS → DATABASE
+' ====================================
+likeModel -down-> dbConfig : pool.query()
+dbConfig -down-> table : SQL Queries\n(SELECT, INSERT, UPDATE)
+table -down-> volumes : Persistencia
+
+' ====================================
+' MIDDLEWARES
+' ====================================
+cors .up.> movieRoutes : Apply
+validator .up.> likeRoutes : Validate imdbId
+errorHandler .up.> movieCtrl : Catch Errors
+
+' ====================================
+' NOTAS
+' ====================================
+note right of movieList
+    **Frontend muestra:**
+    • Listado de películas
+    • Botón de Like por película
+    • Contador de likes por película
+    • Contador global de likes
+end note
+
+note right of apiService
+    **Limitaciones:**
+    • Máximo 10 películas
+    • Timeout: 5 segundos
+    • Retry on failure
+end note
+
+note right of likeModel
+    **Operaciones:**
+    • UPSERT (INSERT ... ON CONFLICT)
+    • Bulk queries (WHERE ... ANY)
+    • SUM para total global
+end note
+
+note bottom of table
+    **Schema:**
+    • id (PK, SERIAL)
+    • imdb_id (UNIQUE)
+    • likes_count (>= 0)
+    • created_at, updated_at
+    
+    **Índices:**
+    • idx_movie_likes_imdb_id
+    
+    **Triggers:**
+    • update_updated_at
+end note
+
+' ====================================
+' LEYENDA
+' ====================================
+legend bottom right
+    **Stack Tecnológico:**
+    • Frontend: React/Vue
+    • Backend: Node.js v20 + Express v5
+    • Language: TypeScript v5.3
+    • Database: PostgreSQL 16 Alpine
+    • HTTP Client: Axios
+    • Containerization: Docker + Docker Compose
+    
+    **Puertos:**
+    • Backend: 3000
+    • PostgreSQL: 5432
+    
+    **Patrón Arquitectónico:**
+    BFF (Backend For Frontend)
+    
+    **Características:**
+    • Separación de capas (Routes, Controllers, Services, Models)
+    • Pool de conexiones (max 20)
+    • Health checks
+    • Error handling centralizado
+    • CORS habilitado
+end legend
+
+@enduml

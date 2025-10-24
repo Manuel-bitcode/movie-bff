@@ -1,5 +1,6 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import { logger } from './middlewares/logger';
 import movieRoutes from './routes/movieRoutes';
 import healthRoutes from './routes/healthRoutes';
 
@@ -14,6 +15,7 @@ app.use(cors({
 }));
 
 // Middlewares
+app.use(logger); // Logger middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

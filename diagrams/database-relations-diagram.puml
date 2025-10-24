@@ -1,0 +1,156 @@
+@startuml database-relations-diagram
+!theme plain
+skinparam backgroundColor #FAFAFA
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+
+title Movie BFF - Diagrama de Flujos de Datos
+
+actor Usuario
+participant movieController as controller
+participant likeController as likeCtrl
+participant movieApiService as apiService
+participant LikeModel as likeModel
+participant PostgreSQL as postgres
+participant "API Externa" as externalApi
+
+== FLUJO 1: Búsqueda de Películas con Likes ==
+
+Usuario -> controller : GET /api/movies?search=batman
+activate controller
+
+controller -> apiService : searchMovies(query)
+activate apiService
+
+apiService -> externalApi : HTTP GET /search
+activate externalApi
+note right
+  Búsqueda en OMDB/TMDB
+  Máximo 10 resultados
+end note
+externalApi --> apiService : Array<Movie>
+deactivate externalApi
+
+apiService --> controller : externalMovies[]
+deactivate apiService
+
+controller -> likeModel : getBulkLikes(imdbIds[])
+activate likeModel
+note right
+  Optimización:
+  Una sola query
+  para todas las películas
+end note
+
+likeModel -> postgres : SELECT ... WHERE imdb_id = ANY($1)
+activate postgres
+postgres --> likeModel : Map<imdbId, likes>
+deactivate postgres
+
+likeModel --> controller : likesMap
+deactivate likeModel
+
+controller -> controller : enrichMovies()
+note right
+  Combina datos externos
+  con likes de la BD
+end note
+
+controller --> Usuario : JSON Response
+deactivate controller
+note left
+  {
+    success: true,
+    data: [
+      {
+        imdbID: "tt0372784",
+        Title: "Batman Begins",
+        Year: "2005",
+        likes: 42
+      },
+      ...
+    ]
+  }
+end note
+
+|||
+
+== FLUJO 2: Incrementar Like de Película ==
+
+Usuario -> likeCtrl : POST /api/movies/tt1234567/like
+activate likeCtrl
+
+likeCtrl -> likeModel : incrementLike("tt1234567")
+activate likeModel
+
+likeModel -> postgres : UPSERT (INSERT ... ON CONFLICT)
+activate postgres
+note right
+  Si existe: incrementa
+  Si no: crea con likes=1
+end note
+postgres --> likeModel : likes_count: 43
+deactivate postgres
+
+likeModel --> likeCtrl : 43
+deactivate likeModel
+
+likeCtrl --> Usuario : JSON Response
+deactivate likeCtrl
+note left
+  {
+    success: true,
+    data: {
+      imdbId: "tt1234567",
+      likes: 43
+    }
+  }
+end note
+
+|||
+
+== FLUJO 3: Contador Global de Likes ==
+
+Usuario -> likeCtrl : GET /api/likes/total
+activate likeCtrl
+
+likeCtrl -> likeModel : getTotalLikes()
+activate likeModel
+
+likeModel -> postgres : SELECT SUM(likes_count)
+activate postgres
+postgres --> likeModel : total: 12458
+deactivate postgres
+
+likeModel --> likeCtrl : 12458
+deactivate likeModel
+
+likeCtrl --> Usuario : JSON Response
+deactivate likeCtrl
+note left
+  {
+    success: true,
+    data: {
+      totalLikes: 12458
+    }
+  }
+end note
+
+legend bottom
+  **Tecnologías:**
+  • Backend: Node.js v20 + Express v5 + TypeScript
+  • Database: PostgreSQL 16 Alpine (Docker)
+  • API Client: Axios
+  • Connection Pool: pg (node-postgres) - max 20 conexiones
+  
+  **Puertos:**
+  • Backend: 3000
+  • PostgreSQL: 5432
+  
+  **Optimizaciones:**
+  • Bulk queries con ANY($1) para múltiples películas
+  • UPSERT para evitar duplicados
+  • Pool de conexiones para mejor rendimiento
+end legend
+
+@enduml
