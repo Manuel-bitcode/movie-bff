@@ -1,8 +1,17 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 import movieRoutes from './routes/movieRoutes';
 import healthRoutes from './routes/healthRoutes';
 
 const app: Express = express();
+
+// CORS - Permitir peticiones desde otros orígenes
+app.use(cors({
+  origin: '*',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Middlewares
 app.use(express.json());
