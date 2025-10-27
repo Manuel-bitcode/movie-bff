@@ -1,0 +1,201 @@
+@startuml Arquitectura Completa - Movie BFF + Movie WebApp
+!define RECTANGLE class
+
+skinparam componentStyle rectangle
+skinparam backgroundColor #FEFEFE
+skinparam component {
+    BackgroundColor<<external>> LightBlue
+    BackgroundColor<<database>> LightCoral
+    BackgroundColor<<backend>> LightGreen
+    BackgroundColor<<frontend>> LightYellow
+    BackgroundColor<<infrastructure>> LightGray
+}
+
+title Arquitectura de Microservicios - Sistema de Películas
+
+' ========================================
+' Capa de Infraestructura Docker
+' ========================================
+package "Docker Infrastructure" <<infrastructure>> {
+    node "Docker Network: movie-network" as network {
+        
+        ' ========================================
+        ' Contenedor Frontend
+        ' ========================================
+        rectangle "Container: movie-webapp" <<frontend>> as webapp {
+            component "Next.js 16.0.0\nReact 19.2.0" as nextjs {
+                [App Router] as router
+                [Layout (RootLayout)] as layout
+                [CounterProvider\n(Context API)] as context
+            }
+            
+            package "Pages/Components" {
+                [Home Page] as home
+                [Movies Component] as movies
+                [Card Component\n(x10)] as card
+                [GlobalCounter] as globalCounter
+                [IconHeart] as icon
+            }
+            
+            package "State Management" {
+                [useCounter Hook] as useCounter
+                [useCard Hook] as useCard
+            }
+            
+            note right of webapp
+                Port: 3000
+                Environment:
+                - NEXT_PUBLIC_API_URL=http://localhost:3001
+                - NODE_ENV=development
+                - WATCHPACK_POLLING=true
+                
+                Volumes:
+                - ./movie-webapp:/app
+                - /app/node_modules
+                - /app/.next
+            end note
+        }
+        
+        ' ========================================
+        ' Contenedor Backend
+        ' ========================================
+        rectangle "Container: movie-bff" <<backend>> as bff {
+            component "Express.js 5.1.0\nTypeScript 5.3.3\nNode.js 20.12.2" as express {
+                [App Configuration] as appConfig
+                [Logger Middleware] as logger
+            }
+            
+            package "Routes" {
+                [Health Routes\n/health] as healthRoutes
+                [Movie Routes\n/api/movies] as movieRoutes
+                [Likes Routes\n/api/movies/:id/like\n/api/likes/total] as likeRoutes
+            }
+            
+            package "Controllers" {
+                [Movie Controller] as movieController
+                [Like Controller] as likeController
+            }
+            
+            package "Models" {
+                [LikeModel] as likeModel
+            }
+            
+            package "Config" {
+                [Database Pool\n(PostgreSQL)] as dbConfig
+                [Environment Config] as envConfig
+            }
+            
+            note right of bff
+                Port: 3001 (comentado por ahora)
+                Environment:
+                - PORT=3000
+                - NODE_ENV=development
+                - DB_HOST=postgres
+                - DB_PORT=5432
+                - DB_NAME=movie_bff
+                - DB_USER=postgres
+                - DB_PASSWORD=1234
+                
+                Volumes:
+                - ./movie-bff:/app (si estuviera activo)
+            end note
+        }
+        
+        ' ========================================
+        ' Contenedor Base de Datos
+        ' ========================================
+        rectangle "Container: movie-bff-postgres" <<database>> as postgres {
+            database "PostgreSQL 16 Alpine" as pgdb {
+                [Database: movie_bff] as db
+                [Table: movie_likes] as table
+            }
+            
+            note right of postgres
+                Port: 5433:5432
+                Environment:
+                - POSTGRES_USER=postgres
+                - POSTGRES_PASSWORD=1234
+                - POSTGRES_DB=movie_bff
+                
+                Health Check:
+                - pg_isready -U postgres
+                - Interval: 10s
+                - Timeout: 5s
+                - Retries: 5
+                
+                Volumes:
+                - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+                - postgres_data:/var/lib/postgresql/data
+            end note
+        }
+    }
+}
+
+' ========================================
+' Servicios Externos
+' ========================================
+cloud "External Services" <<external>> {
+    [OMDB API\nhttp://www.omdbapi.com] as omdb
+}
+
+' ========================================
+' Usuario
+' ========================================
+actor "Usuario\n(Browser)" as user
+
+' ========================================
+' Relaciones de Infraestructura
+' ========================================
+user -down-> webapp : "http://localhost:3000"
+webapp -right-> bff : "http://localhost:3001\n(cuando esté activo)"
+bff -down-> postgres : "postgres:5432\n(internal network)"
+
+' ========================================
+' Relaciones de Componentes Frontend
+' ========================================
+router --> layout : "Wraps all pages"
+layout --> context : "Provides CounterProvider"
+router --> home : "/ route"
+home --> movies : "Renders"
+
+movies --> globalCounter : "Uses"
+movies --> card : "Renders 10 instances"
+
+card --> useCard : "Uses"
+card --> useCounter : "Uses"
+card --> icon : "Uses"
+
+globalCounter --> useCounter : "Uses"
+globalCounter --> icon : "Uses"
+
+useCounter --> context : "Consumes Context"
+
+' ========================================
+' Relaciones de Componentes Backend
+' ========================================
+appConfig --> logger : "Uses middleware"
+appConfig --> healthRoutes : "Registers"
+appConfig --> movieRoutes : "Registers"
+appConfig --> likeRoutes : "Registers"
+
+movieRoutes --> movieController : "Handles /api/movies"
+likeRoutes --> likeController : "Handles /api/movies/:id/like\nand /api/likes/total"
+
+movieController --> likeModel : "getBulkLikes(imdbIds[])"
+likeController --> likeModel : "incrementLike(imdbId)\ngetTotalLikes()"
+
+likeModel --> dbConfig : "Uses Pool"
+dbConfig --> pgdb : "Connects to"
+
+pgdb --> db : "Contains"
+db --> table : "movie_likes\n(id, likes)"
+
+' ========================================
+' Flujo de Datos API
+' ========================================
+useCard -up-> movieRoutes : "GET /api/movies\n(Fetch 10 movies)"
+movieController -up-> omdb : "Fetch ratings from OMDB"
+card -up-> likeRoutes : "POST /api/movies/:id/like\n(Increment like)"
+globalCounter -up-> likeRoutes : "GET /api/likes/total\n(Get total likes)"
+
+@enduml

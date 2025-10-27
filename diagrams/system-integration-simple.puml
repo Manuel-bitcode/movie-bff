@@ -1,0 +1,92 @@
+@startuml Integración Sistema de Películas
+!theme plain
+skinparam backgroundColor white
+skinparam defaultFontSize 11
+skinparam componentStyle rectangle
+
+title Sistema de Gestión de Películas\nArquitectura BFF (Backend for Frontend)
+
+' ========================================
+' Usuario
+' ========================================
+actor "Usuario" as user #LightBlue
+
+' ========================================
+' Contenedor Frontend
+' ========================================
+rectangle "Frontend\n**movie-webapp**" #LightYellow {
+    component "Next.js 16\nReact 19" as nextjs
+    component "Port: 3000" as port3000
+}
+
+' ========================================
+' Contenedor Backend
+' ========================================
+rectangle "Backend\n**movie-bff**" #LightGreen {
+    component "Express.js 5.1\nNode.js 20" as express
+    component "Port: 3001" as port3001
+    
+    package "Endpoints API" {
+        [GET /api/movies] as getMovies
+        [POST /api/movies/:id/like] as postLike
+        [GET /api/likes/total] as getTotal
+    }
+}
+
+' ========================================
+' Contenedor Database
+' ========================================
+database "Base de Datos\n**PostgreSQL 16**" #LightCoral {
+    component "movie_bff" as db
+    storage "movie_likes\n(id, likes)" as table
+}
+
+' ========================================
+' Servicio Externo
+' ========================================
+cloud "API Externa\n**OMDB**" #LightSkyBlue {
+    component "Ratings\nde Películas" as omdb
+}
+
+' ========================================
+' Relaciones
+' ========================================
+user -down-> nextjs : "1. Accede"
+nextjs -down-> express : "2. Consume API"
+
+express -down-> getMovies
+express -down-> postLike
+express -down-> getTotal
+
+getMovies -right-> omdb : "Obtiene ratings"
+getMovies -down-> table : "Obtiene likes"
+postLike -down-> table : "Incrementa"
+getTotal -down-> table : "Suma total"
+
+note right of nextjs
+  **Tecnologías:**
+  • React 19.2.0
+  • TypeScript 5
+  • Tailwind CSS 4
+  • Context API
+end note
+
+note right of express
+  **Funcionalidades:**
+  • Health Check
+  • CRUD de Likes
+  • Integración OMDB
+  • Pool PostgreSQL
+end note
+
+note right of db
+  **Configuración:**
+  • Puerto: 5433:5432
+  • User: postgres
+  • Pass: 1234
+  • Volumen persistente
+end note
+
+footer Docker Compose con 3 contenedores en red privada movie-network
+
+@enduml
