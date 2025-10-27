@@ -1,0 +1,68 @@
+@startuml Configuración Docker
+!theme plain
+skinparam backgroundColor white
+
+title Arquitectura Docker Compose
+
+package "Docker Host" {
+    
+    node "movie-webapp" <<container>> #LightYellow {
+        artifact "Next.js App"
+        portin ":3000"
+        note right
+            **Imagen:** node:20-alpine
+            **Variables:**
+            • NEXT_PUBLIC_API_URL
+            • NODE_ENV=development
+            **Volumen:**
+            • ./movie-webapp:/app
+        end note
+    }
+    
+    node "movie-bff" <<container>> #LightGreen {
+        artifact "Express.js App"
+        portin ":3001"
+        note right
+            **Imagen:** node:20-alpine
+            **Variables:**
+            • DB_HOST=postgres
+            • DB_PORT=5432
+            • DB_PASSWORD=1234
+            **Depende de:** postgres
+        end note
+    }
+    
+    node "postgres" <<database>> #LightCoral {
+        database "PostgreSQL 16"
+        portin ":5432"
+        note right
+            **Imagen:** postgres:16-alpine
+            **Puerto externo:** 5433:5432
+            **Base de datos:** movie_bff
+            **Script:** init.sql (auto)
+            **Volumen persistente**
+        end note
+    }
+    
+    cloud "movie-network" as network {
+    }
+}
+
+actor Usuario
+
+Usuario -down-> ":3000" : "localhost:3000"
+":3000" -down-> ":3001" : "API calls"
+":3001" -down-> ":5432" : "SQL queries"
+
+":3000" -- network
+":3001" -- network
+":5432" -- network
+
+note bottom of network
+    **Red Docker:**
+    • Comunicación interna
+    • DNS automático
+    • Aislamiento de red
+end note
+
+@enduml

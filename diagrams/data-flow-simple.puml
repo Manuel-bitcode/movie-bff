@@ -1,0 +1,40 @@
+@startuml Flujo de Datos Simplificado
+!theme plain
+skinparam backgroundColor white
+skinparam sequenceMessageAlign center
+
+title Flujo de Interacción del Sistema
+
+actor Usuario
+participant "Frontend\n(Next.js)" as Frontend
+participant "Backend\n(Express)" as Backend
+participant "PostgreSQL" as DB
+participant "OMDB API" as OMDB
+
+== Carga de Películas ==
+Usuario -> Frontend : Accede a la aplicación
+Frontend -> Backend : GET /api/movies
+Backend -> OMDB : Consulta ratings de 10 películas
+OMDB --> Backend : Retorna datos + ratings
+Backend -> DB : SELECT likes de películas
+DB --> Backend : Retorna likes
+Backend --> Frontend : JSON: películas + ratings + likes
+Frontend --> Usuario : Muestra 10 Cards de películas
+
+== Usuario Da Like ==
+Usuario -> Frontend : Click en botón ❤️
+Frontend -> Backend : POST /api/movies/:id/like
+Backend -> DB : UPDATE likes + 1
+DB --> Backend : Retorna nuevo total
+Backend --> Frontend : JSON: {likes: 43}
+Frontend --> Usuario : Actualiza contador
+
+== Consulta Total de Likes ==
+Usuario -> Frontend : Ve GlobalCounter
+Frontend -> Backend : GET /api/likes/total
+Backend -> DB : SELECT SUM(likes)
+DB --> Backend : Total: 230
+Backend --> Frontend : JSON: {total: 230}
+Frontend --> Usuario : Muestra "230 ❤️"
+
+@enduml
