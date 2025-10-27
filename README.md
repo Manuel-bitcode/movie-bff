@@ -16,13 +16,18 @@ nvm use
 
 ```
 movie-bff/
+├── database/
+│   └── init.sql                  # Script de inicialización de PostgreSQL
 ├── src/
 │   ├── app.ts                    # Configuración de Express
 │   ├── server.ts                 # Punto de entrada del servidor
 │   ├── config/
-│   │   └── config.ts             # Configuración centralizada
+│   │   ├── config.ts             # Configuración centralizada
+│   │   └── database.ts           # Pool de conexiones PostgreSQL
 │   ├── controllers/
 │   │   └── movieController.ts    # Lógica de negocio
+│   ├── models/
+│   │   └── likeModel.ts          # Modelo de datos para likes
 │   ├── routes/
 │   │   ├── movieRoutes.ts        # Rutas de películas
 │   │   └── healthRoutes.ts       # Ruta de health check
@@ -32,7 +37,7 @@ movie-bff/
 │       └── movie.types.ts        # Tipos e interfaces TypeScript
 ├── dist/                         # Código compilado (generado)
 ├── Dockerfile                    # Configuración Docker (comentado)
-├── docker-compose.yml            # Orquestación Docker (comentado)
+├── docker-compose.yml            # Orquestación Docker (PostgreSQL)
 ├── .dockerignore                 # Exclusiones Docker
 ├── .eslintrc.json                # Configuración de ESLint
 ├── .eslintignore                 # Exclusiones de ESLint
@@ -41,7 +46,8 @@ movie-bff/
 ├── .gitignore
 ├── tsconfig.json                 # Configuración de TypeScript
 ├── package.json
-└── README.md
+├── README.md
+└── DATABASE-SETUP.md             # Guía de configuración de PostgreSQL
 ```
 
 ## 🚀 Instalación y Uso
@@ -162,7 +168,7 @@ GET /api/movies
 
 ---
 
-## 🐳 Docker
+## � Docker
 
 ### Archivos incluidos:
 - `Dockerfile` - Define cómo construir la imagen (con comentarios explicativos)
@@ -286,7 +292,10 @@ npm run docker:up
 
 Este proyecto está bajo la licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
-## 👤 Autor
+---
 
-**Manuel Martinez**
+## 👥 Autores
+
+- **Manuel Martinez** - Desarrollo inicial y arquitectura
+- **Wílmer E. León** - Patrones de diseño Back-end y base de datos
 

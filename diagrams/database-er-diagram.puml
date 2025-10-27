@@ -1,0 +1,119 @@
+@startuml database-er-diagram
+!define ENTITY_COLOR #E1F5FE
+!define PK_COLOR #FFD54F
+!define FK_COLOR #AED581
+
+title Movie BFF - Diagrama Entidad-Relación (ER)\nBase de Datos PostgreSQL
+
+' Configuración del estilo
+skinparam class {
+    BackgroundColor ENTITY_COLOR
+    BorderColor #0277BD
+    ArrowColor #0277BD
+    FontName Arial
+    FontSize 12
+}
+
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57F17
+}
+
+' ====================================
+' ENTIDAD: movie_likes
+' ====================================
+entity "movie_likes" as movie_likes {
+    **id** : SERIAL <<PK>> #FFD54F
+    --
+    **imdb_id** : VARCHAR(20) <<UNIQUE>> #AED581
+    likes_count : INTEGER
+    created_at : TIMESTAMP
+    updated_at : TIMESTAMP
+    --
+    **Constraints:**
+    • PK: id
+    • UNIQUE: imdb_id
+    • CHECK: likes_count >= 0
+    • DEFAULT: created_at = NOW()
+    • DEFAULT: updated_at = NOW()
+}
+
+' ====================================
+' ENTIDAD: movies (API Externa - OMDB)
+' ====================================
+entity "movies\n(API Externa - OMDB)" as movies {
+    **imdbID** : STRING <<PK>>
+    --
+    Title : STRING
+    Year : STRING
+    Type : STRING
+    Poster : STRING (URL)
+    --
+    **Nota:** 
+    Datos consumidos desde
+    API externa, no almacenados
+    localmente
+}
+
+' ====================================
+' RELACIÓN
+' ====================================
+movies ||--o{ movie_likes : "tiene likes >"
+note on link
+    **Relación 1:N**
+    Una película puede tener
+    múltiples registros de likes
+    (historial si se implementa)
+    
+    Actualmente: 1:1 con UPSERT
+    (un registro por película)
+end note
+
+' ====================================
+' NOTAS ADICIONALES
+' ====================================
+note right of movie_likes
+    **Índices:**
+    • idx_movie_likes_imdb_id
+      (búsquedas rápidas)
+    
+    **Triggers:**
+    • update_movie_likes_updated_at
+      (actualiza updated_at automático)
+    
+    **Operaciones:**
+    • UPSERT en incrementLike()
+    • SELECT por imdb_id
+    • SELECT múltiples (bulk)
+    • SUM para total global
+end note
+
+note left of movies
+    **Fuente de Datos:**
+    OMDB API / TMDB API
+    
+    **Límite:**
+    Máximo 10 resultados
+    por búsqueda
+    
+    **Campos Adicionales:**
+    Pueden incluirse más
+    campos según necesidad
+    (genre, director, rating, etc.)
+end note
+
+' ====================================
+' LEYENDA
+' ====================================
+legend bottom
+    **Convenciones:**
+    • <color:#FFD54F>■</color> Primary Key (PK)
+    • <color:#AED581>■</color> Unique / Foreign Key
+    • <color:#E1F5FE>■</color> Entidad
+    
+    **Base de Datos:** PostgreSQL 16 Alpine
+    **ORM:** Native pg (node-postgres)
+    **Puerto:** 5432
+end legend
+
+@enduml
