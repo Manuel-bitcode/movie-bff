@@ -269,7 +269,33 @@ npm run docker:up
 
 ---
 
-## 🛠️ Stack Tecnológico
+## � Imagen Docker de PostgreSQL
+
+Este proyecto incluye una **imagen Docker personalizada** de PostgreSQL con la base de datos pre-configurada y datos de prueba incluidos.
+
+**📦 Imagen publicada en Docker Hub:** [`wilmerleon/movie-bff-postgres`](https://hub.docker.com/r/wilmerleon/movie-bff-postgres)
+
+### Características:
+- ✅ Base de datos `movie_bff` pre-inicializada
+- ✅ Tabla `movie_likes` con 6 películas de prueba
+- ✅ Contraseña configurable via `.env`
+- ✅ Health check integrado
+- ✅ Volúmenes persistentes
+
+### Uso rápido:
+```bash
+# Levantar PostgreSQL con Docker Compose
+docker-compose up -d postgres
+
+# O pull directo desde Docker Hub
+docker pull wilmerleon/movie-bff-postgres:latest
+```
+
+📖 **Documentación completa:** Ver [DOCKER_IMAGE.md](DOCKER_IMAGE.md)
+
+---
+
+## �🛠️ Stack Tecnológico
 
 ### Runtime & Lenguaje
 - **Node.js** v20.12.2

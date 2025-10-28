@@ -5,7 +5,9 @@ services:
   # Servicio PostgreSQL
   # ====================================
   postgres:
-    image: postgres:16-alpine
+    # Imagen personalizada en Docker Hub con datos inicializados
+    # También disponible: postgres:16-alpine (sin datos)
+    image: wilmerleon/movie-bff-postgres:latest
     container_name: movie-bff-postgres
     restart: unless-stopped
     
