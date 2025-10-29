@@ -43,45 +43,45 @@ services:
         max-file: "3"
 
   # ====================================
-  # Servicio Backend (opcional - comentado por ahora)
+  # Servicio Backend
   # ====================================
-  # app:
-  #   container_name: movie-bff
-  #   build: 
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   
-  #   ports:
-  #     - "${PORT:-3000}:${PORT:-3000}"
-  #   
-  #   environment:
-  #     - PORT=${PORT:-3000}
-  #     - NODE_ENV=${NODE_ENV:-production}
-  #     - DB_HOST=postgres
-  #     - DB_PORT=5432
-  #     - DB_NAME=${DB_NAME:-movie_bff}
-  #     - DB_USER=${DB_USER:-postgres}
-  #     - DB_PASSWORD=${DB_PASSWORD:-postgres}
-  #     - OMDB_API_KEY=${OMDB_API_KEY:-}
-  #   
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   
-  #   restart: unless-stopped
-  #   
-  #   healthcheck:
-  #     test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:${PORT:-3000}/health"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-  #     start_period: 40s
-  #   
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #       max-file: "3"
+  app:
+    container_name: movie-bff
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    
+    environment:
+      - PORT=${PORT:-3000}
+      - NODE_ENV=${NODE_ENV:-production}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-movie_bff}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-1234}
+      - OMDB_API_KEY=${OMDB_API_KEY:-}
+    
+    depends_on:
+      postgres:
+        condition: service_healthy
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:${PORT:-3000}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 # ====================================
 # Volúmenes

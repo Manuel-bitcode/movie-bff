@@ -168,6 +168,63 @@ GET /api/movies
 
 ---
 
+### Sistema de Likes ⭐
+
+> 📖 **Documentación completa:** Ver [LIKES_SYSTEM.md](./LIKES_SYSTEM.md) para detalles técnicos y ejemplos
+
+#### Obtener likes de una película
+```http
+GET /api/movies/:id/likes
+```
+**Ejemplo:** `GET /api/movies/tt0362120/likes`
+
+**Respuesta:**
+```json
+{
+  "success": true,
+  "data": {
+    "imdbId": "tt0362120",
+    "likes": 43
+  },
+  "message": "Likes obtenidos correctamente"
+}
+```
+
+#### Incrementar like de una película
+```http
+POST /api/movies/:id/like
+```
+**Ejemplo:** `POST /api/movies/tt0362120/like`
+
+**Respuesta:**
+```json
+{
+  "success": true,
+  "data": {
+    "imdbId": "tt0362120",
+    "likes": 44
+  },
+  "message": "Like incrementado correctamente"
+}
+```
+
+#### Obtener total de likes
+```http
+GET /api/likes/total
+```
+**Respuesta:**
+```json
+{
+  "success": true,
+  "data": {
+    "totalLikes": 12345
+  },
+  "message": "Total de likes obtenido correctamente"
+}
+```
+
+---
+
 ## � Docker
 
 ### Archivos incluidos:

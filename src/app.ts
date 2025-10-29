@@ -2,6 +2,7 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { logger } from './middlewares/logger';
 import movieRoutes from './routes/movieRoutes';
+import likesTotalRoutes from './routes/likesTotalRoutes';
 import healthRoutes from './routes/healthRoutes';
 
 const app: Express = express();
@@ -25,12 +26,13 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 // Routes
-app.use('/api/movies', movieRoutes);
 app.use('/health', healthRoutes);
+app.use('/api/likes', likesTotalRoutes);
+app.use('/api/movies', movieRoutes);
 
 // Error handling middleware
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err.stack);
+  console.error('Error:', err.message);
   res.status(err.status || 500).json({
     error: {
       message: err.message || 'Internal Server Error',
