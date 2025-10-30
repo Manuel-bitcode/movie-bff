@@ -1,34 +1,40 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
-// Cargar variables de entorno desde .env
 dotenv.config();
 
-// Debug: imprimir configuración de conexión
+// Detectar si estamos corriendo dentro de Docker
+const isDocker = process.env.DOCKER_ENV === 'true';
+
+// Definir host dinámicamente
+const DB_HOST = isDocker ? process.env.DB_HOST || 'postgres' : process.env.DB_HOST || 'localhost';
+const DB_PORT = parseInt(process.env.DB_PORT || (isDocker ? '5432' : '5433'), 10);
+const DB_NAME = process.env.DB_NAME || 'movie_bff';
+const DB_USER = process.env.DB_USER || 'postgres';
+const DB_PASSWORD = process.env.DB_PASSWORD || 'postgres';
+
+// Debug
 console.log('🔍 Configuración de conexión:');
-console.log(`Host: ${process.env.DB_HOST || 'localhost'}`);
-console.log(`Port: ${process.env.DB_PORT || '5432'}`);
-console.log(`Database: ${process.env.DB_NAME || 'movie_bff'}`);
-console.log(`User: ${process.env.DB_USER || 'postgres'}`);
+console.log(`Host: ${DB_HOST}`);
+console.log(`Port: ${DB_PORT}`);
+console.log(`Database: ${DB_NAME}`);
+console.log(`User: ${DB_USER}`);
 console.log('');
 
 /**
  * Configuración de conexión a PostgreSQL
  */
 const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-  database: process.env.DB_NAME || 'movie_bff',
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres',
-  max: 20, // Máximo de conexiones en el pool
+  host: DB_HOST,
+  port: DB_PORT,
+  database: DB_NAME,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 });
 
-/**
- * Verificar conexión a la base de datos
- */
 pool.on('connect', () => {
   console.log('✅ Conectado a PostgreSQL');
 });

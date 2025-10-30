@@ -5,7 +5,7 @@ interface Config {
 }
 
 const config: Config = {
-  port: parseInt(process.env.PORT || '3000', 10),
+  port: parseInt(process.env.PORT || '3004', 10),
   env: process.env.NODE_ENV || 'development',
   apiKey: process.env.API_KEY || '',
 };
