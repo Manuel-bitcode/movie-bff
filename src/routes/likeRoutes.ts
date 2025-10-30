@@ -5,12 +5,12 @@ import { validateImdbId } from '../middlewares/validateImdbId';
 const router = Router();
 
 // POST /api/movies/:imdbId/like - Dar like a una película
-router.post('/:imdbId/like', validateImdbId, likeController.likeMovie);
+router.post('/:imdbId/like', validateImdbId, likeController.getMovieLikes);
 
 // GET /api/movies/:imdbId/likes - Obtener likes de una película
 router.get('/:imdbId/likes', validateImdbId, likeController.getMovieLikes);
 
-router.get('/total', likeController.getTotalLikes);
+//router.get('/total', likeController.getTotalLikes);
 
 
 export default router;
