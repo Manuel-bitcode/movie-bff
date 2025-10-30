@@ -1,0 +1,191 @@
+@startuml Deployment Docker - Arquitectura de Contenedores
+!theme plain
+
+title Arquitectura de Deployment - Docker Compose
+
+' ========================================
+' Nodos físicos/lógicos
+' ========================================
+node "Docker Host (Windows)" {
+    
+    ' Red Docker
+    cloud "Docker Network: movie-network" as network {
+        
+        ' ========================================
+        ' Contenedor Frontend
+        ' ========================================
+        node "movie-webapp" <<container>> {
+            artifact "Next.js App" as nextApp {
+                component ":3000" as port3000
+                folder "src/" as srcFront
+                folder "node_modules/" as nodeModulesFront
+                folder ".next/" as nextCache
+            }
+            
+            note bottom of nextApp
+                **Image**: node:20-alpine
+                **Build Context**: ./movie-webapp
+                **Dockerfile**: Dockerfile
+                
+                **Volumes**:
+                - ./movie-webapp:/app (bind)
+                - /app/node_modules (anonymous)
+                - /app/.next (anonymous)
+                
+                **Environment**:
+                - NEXT_PUBLIC_API_URL=http://localhost:3001
+                - NODE_ENV=development
+                - WATCHPACK_POLLING=true
+                
+                **Restart**: unless-stopped
+                **Network**: movie-network
+            end note
+        }
+        
+        ' ========================================
+        ' Contenedor Backend
+        ' ========================================
+        node "movie-bff (comentado)" <<container>> {
+            artifact "Express.js App" as expressApp {
+                component ":3001" as port3001
+                folder "src/" as srcBack
+                folder "dist/" as dist
+                folder "node_modules/" as nodeModulesBack
+            }
+            
+            note bottom of expressApp
+                **Image**: node:20-alpine
+                **Build Context**: ./movie-bff
+                **Dockerfile**: Dockerfile
+                
+                **Volumes** (si estuviera activo):
+                - ./movie-bff:/app (bind)
+                - /app/node_modules (anonymous)
+                - /app/dist (anonymous)
+                
+                **Environment**:
+                - PORT=3000
+                - NODE_ENV=production
+                - DB_HOST=postgres
+                - DB_PORT=5432
+                - DB_NAME=movie_bff
+                - DB_USER=postgres
+                - DB_PASSWORD=1234
+                - OMDB_API_KEY=${OMDB_API_KEY}
+                
+                **Depends On**: postgres (healthy)
+                **Restart**: unless-stopped
+                **Health Check**:
+                - wget http://localhost:3000/health
+                - Interval: 30s, Timeout: 10s
+                - Retries: 3, Start period: 40s
+            end note
+        }
+        
+        ' ========================================
+        ' Contenedor PostgreSQL
+        ' ========================================
+        node "movie-bff-postgres" <<database>> {
+            database "PostgreSQL 16" as pgInstance {
+                component ":5432" as port5432
+                folder "movie_bff" as dbFolder {
+                    artifact "movie_likes table" as table
+                }
+            }
+            
+            note bottom of pgInstance
+                **Image**: postgres:16-alpine
+                **Container Name**: movie-bff-postgres
+                
+                **Volumes**:
+                - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+                - postgres_data:/var/lib/postgresql/data
+                
+                **Environment**:
+                - POSTGRES_USER=postgres
+                - POSTGRES_PASSWORD=1234
+                - POSTGRES_DB=movie_bff
+                
+                **Restart**: unless-stopped
+                **Health Check**:
+                - pg_isready -U postgres
+                - Interval: 10s, Timeout: 5s, Retries: 5
+                
+                **Logging**:
+                - Driver: json-file
+                - Max size: 10m, Max files: 3
+            end note
+        }
+    }
+    
+    ' ========================================
+    ' Volúmenes Persistentes
+    ' ========================================
+    database "Docker Volumes" {
+        folder "postgres_data" as volume {
+            artifact "PostgreSQL Data" as pgData
+        }
+    }
+    
+    ' ========================================
+    ' Archivos del Host
+    ' ========================================
+    folder "Host Project Files" {
+        folder "movie-webapp/" as hostWebapp {
+            artifact "src/"
+            artifact "package.json"
+            artifact "Dockerfile"
+        }
+        
+        folder "movie-bff/" as hostBff {
+            artifact "src/"
+            artifact "database/"
+            artifact "docker-compose.yml"
+            artifact "package.json"
+            artifact "Dockerfile"
+        }
+    }
+}
+
+' ========================================
+' Usuario y Red Externa
+' ========================================
+actor "Usuario\n(Browser)" as user
+
+cloud "Internet" {
+    interface "localhost:3000" as extPort3000
+    interface "localhost:3001" as extPort3001
+    interface "localhost:5433" as extPort5433
+}
+
+cloud "External API" {
+    component "OMDB API" as omdb
+}
+
+' ========================================
+' Conexiones de Red
+' ========================================
+user --> extPort3000 : "Access Frontend"
+extPort3000 --> port3000 : "Port Mapping\n3000:3000"
+
+port3000 --> port3001 : "API Calls\n(when active)"
+extPort3001 --> port3001 : "Port Mapping\n3001:3000"
+
+port3001 --> port5432 : "Database Connection\ninternal network"
+extPort5433 --> port5432 : "Port Mapping\n5433:5432"
+
+port3001 --> omdb : "Fetch Movie Ratings"
+
+' ========================================
+' Sincronización de Volúmenes
+' ========================================
+hostWebapp <--> srcFront : "Bind Mount\n(development)"
+hostBff <--> srcBack : "Bind Mount\n(when active)"
+volume <--> pgData : "Persistent Volume"
+
+' ========================================
+' Dependencias entre Contenedores
+' ========================================
+expressApp ..> pgInstance : "depends_on:\nservice_healthy"
+
+@enduml

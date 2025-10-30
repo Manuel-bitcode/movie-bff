@@ -1,0 +1,208 @@
+@startuml Backend Architecture - Movie BFF con Sistema de Likes
+!define RECTANGLE class
+
+skinparam backgroundColor #FEFEFE
+skinparam componentStyle rectangle
+
+' Estilos
+skinparam component {
+    BackgroundColor<<external>> #E3F2FD
+    BackgroundColor<<controller>> #C8E6C9
+    BackgroundColor<<service>> #FFF9C4
+    BackgroundColor<<model>> #FFCCBC
+    BackgroundColor<<middleware>> #F8BBD0
+    BackgroundColor<<route>> #B2DFDB
+    BackgroundColor<<database>> #D1C4E9
+    BorderColor #424242
+    FontSize 12
+}
+
+title Arquitectura Backend - Movie BFF con Sistema de Likes\n(Issue #2 - Implementado)
+
+' Cliente
+actor Cliente as client
+
+' Capa de Entrada
+package "🌐 Entry Point" {
+    [server.ts] as server <<entry>>
+    [app.ts] as app <<config>>
+}
+
+' Middlewares
+package "🔧 Middlewares" {
+    [logger] <<middleware>>
+    [validateImdbId] <<middleware>>
+    [cors] <<middleware>>
+    [error handler] <<middleware>>
+}
+
+' Rutas
+package "🛣️ Routes Layer" {
+    [healthRoutes] <<route>>
+    [movieRoutes] <<route>>
+    [likesTotalRoutes] <<route>>
+}
+
+' Controladores
+package "🎮 Controllers Layer" {
+    [movieController] <<controller>>
+    [likeController] <<controller>>
+}
+
+' Modelos
+package "📦 Models Layer" {
+    [likeModel] <<model>>
+}
+
+' Configuración
+package "⚙️ Configuration" {
+    [config.ts] <<service>>
+    [database.ts] <<service>>
+}
+
+' Base de datos
+database "🗄️ PostgreSQL" {
+    [movie_likes\ntable] <<database>>
+}
+
+' API Externa
+cloud "🌍 External API" {
+    [OMDB API] <<external>>
+}
+
+' Tipos
+package "📋 Types" {
+    [movie.types.ts] <<model>>
+}
+
+' === FLUJO DE DATOS ===
+
+' Cliente -> Entry Point
+client --> server : HTTP Request
+
+' Entry Point -> App
+server --> app : Initialize
+
+' App -> Middlewares
+app --> cors : Enable CORS
+app --> logger : Log requests
+app --> validateImdbId : Validate imdbId
+app --> [error handler] : Handle errors
+
+' App -> Routes
+app --> healthRoutes : /health
+app --> movieRoutes : /api/movies
+app --> likesTotalRoutes : /api/likes
+
+' Routes -> Controllers
+healthRoutes --> movieController : Health check
+movieRoutes --> movieController : GET /\nGET /:id
+movieRoutes --> likeController : GET /:id/likes\nPOST /:id/like
+likesTotalRoutes --> likeController : GET /total
+
+' Controllers -> Models
+likeController --> likeModel : getLikesCount()\nincrementLike()\ngetTotalLikes()
+
+' Controllers -> External API
+movieController --> [OMDB API] : Fetch movie data
+
+' Models -> Database
+likeModel --> database.ts : Connection pool
+database.ts --> [movie_likes\ntable] : SQL queries
+
+' Configuration
+config.ts --> database.ts : DB credentials
+database.ts ..> [movie_likes\ntable] : CRUD operations
+
+' Types usage
+movieController ..> movie.types.ts : Movie\nApiResponse
+likeController ..> movie.types.ts : LikeResponse\nTotalLikesResponse
+
+' === NOTAS ===
+
+note right of movieRoutes
+  **Endpoints:**
+  • GET / - Lista todas las películas
+  • GET /:id - Detalle de película
+  • GET /:id/likes - Likes de película
+  • POST /:id/like - Incrementar like
+end note
+
+note right of likesTotalRoutes
+  **Endpoint:**
+  • GET /total - Total de likes global
+end note
+
+note right of likeModel
+  **Operaciones:**
+  • getLikesCount(imdbId)
+  • incrementLike(imdbId)
+  • getTotalLikes()
+  
+  **SQL Operations:**
+  • SELECT likes WHERE imdb_id
+  • INSERT ... ON CONFLICT DO UPDATE
+  • SELECT SUM(likes)
+end note
+
+note right of [movie_likes\ntable]
+  **Schema:**
+  • imdb_id VARCHAR(20) PK
+  • likes INTEGER DEFAULT 0
+  • created_at TIMESTAMP
+  • updated_at TIMESTAMP
+  
+  **Constraints:**
+  • likes >= 0 (CHECK)
+  • UNIQUE(imdb_id)
+end note
+
+note right of database.ts
+  **Features:**
+  • Dynamic host detection
+  • Docker / Local support
+  • Connection pooling
+  • Health checks
+  
+  **Environment:**
+  • DOCKER_ENV=true → postgres:5432
+  • DOCKER_ENV=false → localhost:5433
+end note
+
+note right of validateImdbId
+  **Validation:**
+  • Format: tt + 7+ digits
+  • Example: tt0111161
+  • Returns 400 if invalid
+end note
+
+note bottom of app
+  **Configuración:**
+  • CORS: Enabled (*)
+  • Body Parser: JSON + URLEncoded
+  • Logger: Custom middleware
+  • Error Handler: Centralized
+  • 404 Handler: Route not found
+end note
+
+' === LEYENDA ===
+
+legend right
+  |= Color |= Component Type |
+  | <back:#E3F2FD>   </back> | External Services |
+  | <back:#C8E6C9>   </back> | Controllers |
+  | <back:#FFF9C4>   </back> | Services/Config |
+  | <back:#FFCCBC>   </back> | Models |
+  | <back:#F8BBD0>   </back> | Middlewares |
+  | <back:#B2DFDB>   </back> | Routes |
+  | <back:#D1C4E9>   </back> | Database |
+  
+  **Tecnologías:**
+  • Node.js v20.12.2
+  • Express.js 5.1.0
+  • TypeScript 5.7.2
+  • PostgreSQL 16 Alpine
+  • Docker Compose
+endlegend
+
+@enduml

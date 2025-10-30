@@ -1,0 +1,291 @@
+@startuml Flujo de Datos - Sistema de Likes
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultTextAlignment center
+skinparam ArrowColor #2C3E50
+skinparam ArrowThickness 2
+
+title Sistema de Likes - Flujo de Datos Detallado\n(Movie BFF - Issue #2)
+
+actor Cliente as client #LightBlue
+participant "Express\nApp" as app #LightGreen
+participant "Logger\nMiddleware" as logger #Pink
+participant "Validate\nImdbId" as validator #Pink
+participant "movieRoutes\n/api/movies" as movieRoutes #Cyan
+participant "likesTotalRoutes\n/api/likes" as likesRoutes #Cyan
+participant "likeController" as controller #Yellow
+participant "likeModel" as model #Orange
+database "PostgreSQL\nmovie_likes" as db #Purple
+
+' =====================================================
+' CASO 1: GET /api/movies/:id/likes
+' =====================================================
+
+group GET /api/movies/:id/likes - Obtener likes de película
+    client -> app : GET /api/movies/tt0111161/likes
+    activate app
+    
+    app -> logger : Log request
+    activate logger
+    logger -> logger : [timestamp] GET /api/movies/tt0111161/likes - IP: xxx
+    logger --> app : Continue
+    deactivate logger
+    
+    app -> movieRoutes : Route matching
+    activate movieRoutes
+    
+    movieRoutes -> validator : Validate imdbId
+    activate validator
+    validator -> validator : Check format: /^tt\\d{7,}$/
+    alt Invalid format
+        validator --> client : 400 Bad Request\n{"success": false, "message": "Invalid imdbId format"}
+    else Valid format
+        validator --> movieRoutes : Continue
+    end
+    deactivate validator
+    
+    movieRoutes -> controller : getMovieLikes(req, res)
+    activate controller
+    
+    controller -> controller : Extract imdbId from params
+    controller -> model : getLikesCount(tt0111161)
+    activate model
+    
+    model -> db : SELECT likes FROM movie_likes\nWHERE imdb_id = 'tt0111161'
+    activate db
+    
+    alt Movie exists
+        db --> model : { likes: 57 }
+        model --> controller : 57
+        controller --> client : 200 OK\n{"success": true,\n "data": {"imdbId": "tt0111161", "likes": 57},\n "message": "Likes obtenidos correctamente"}
+    else Movie not found
+        db --> model : null
+        model --> controller : 0
+        controller --> client : 200 OK\n{"success": true,\n "data": {"imdbId": "tt0111161", "likes": 0},\n "message": "Likes obtenidos correctamente"}
+    end
+    
+    deactivate db
+    deactivate model
+    deactivate controller
+    deactivate movieRoutes
+    deactivate app
+end
+
+|||
+
+' =====================================================
+' CASO 2: POST /api/movies/:id/like
+' =====================================================
+
+group POST /api/movies/:id/like - Incrementar like
+    client -> app : POST /api/movies/tt0362120/like
+    activate app
+    
+    app -> logger : Log request
+    activate logger
+    logger --> app : Continue
+    deactivate logger
+    
+    app -> movieRoutes : Route matching
+    activate movieRoutes
+    
+    movieRoutes -> validator : Validate imdbId
+    activate validator
+    validator --> movieRoutes : Valid ✓
+    deactivate validator
+    
+    movieRoutes -> controller : incrementMovieLike(req, res)
+    activate controller
+    
+    controller -> model : incrementLike(tt0362120)
+    activate model
+    
+    model -> db : INSERT INTO movie_likes\n(imdb_id, likes, created_at, updated_at)\nVALUES ('tt0362120', 1, NOW(), NOW())\nON CONFLICT (imdb_id) DO UPDATE\nSET likes = movie_likes.likes + 1,\n    updated_at = NOW()\nRETURNING likes
+    activate db
+    
+    db -> db : Check constraint: likes >= 0
+    db --> model : { likes: 58 }
+    deactivate db
+    
+    model --> controller : 58
+    deactivate model
+    
+    controller --> client : 200 OK\n{"success": true,\n "data": {"imdbId": "tt0362120", "likes": 58},\n "message": "Like incrementado correctamente"}
+    deactivate controller
+    deactivate movieRoutes
+    deactivate app
+end
+
+|||
+
+' =====================================================
+' CASO 3: GET /api/likes/total
+' =====================================================
+
+group GET /api/likes/total - Total de likes global
+    client -> app : GET /api/likes/total
+    activate app
+    
+    app -> logger : Log request
+    activate logger
+    logger --> app : Continue
+    deactivate logger
+    
+    app -> likesRoutes : Route matching
+    activate likesRoutes
+    
+    likesRoutes -> controller : getTotalLikes(req, res)
+    activate controller
+    
+    controller -> model : getTotalLikes()
+    activate model
+    
+    model -> db : SELECT COALESCE(SUM(likes), 0) AS total\nFROM movie_likes
+    activate db
+    
+    db -> db : Aggregate all likes
+    db --> model : { total: 402 }
+    deactivate db
+    
+    model --> controller : 402
+    deactivate model
+    
+    controller --> client : 200 OK\n{"success": true,\n "data": {"totalLikes": 402},\n "message": "Total de likes calculado correctamente"}
+    deactivate controller
+    deactivate likesRoutes
+    deactivate app
+end
+
+|||
+
+' =====================================================
+' CASO 4: Error Handling
+' =====================================================
+
+group Error Handling - Manejo de errores
+    client -> app : POST /api/movies/invalid-id/like
+    activate app
+    
+    app -> logger : Log request
+    activate logger
+    logger --> app : Continue
+    deactivate logger
+    
+    app -> movieRoutes : Route matching
+    activate movieRoutes
+    
+    movieRoutes -> validator : Validate imdbId
+    activate validator
+    validator -> validator : Regex test fails
+    validator --> client : 400 Bad Request\n{"success": false,\n "message": "Invalid imdbId format.\nExpected: tt1234567"}
+    deactivate validator
+    deactivate movieRoutes
+    deactivate app
+end
+
+note right of db
+  **Tabla: movie_likes**
+  
+  CREATE TABLE movie_likes (
+    imdb_id VARCHAR(20) PRIMARY KEY,
+    likes INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    CONSTRAINT likes_positive CHECK (likes >= 0)
+  );
+  
+  **Índices:**
+  • PRIMARY KEY (imdb_id)
+  • idx_movie_likes_id
+  
+  **Datos actuales:**
+  • 7 películas con likes
+  • 402 likes totales
+end note
+
+note right of model
+  **Métodos del modelo:**
+  
+  1. getLikesCount(imdbId: string)
+     → Retorna número de likes o 0
+  
+  2. incrementLike(imdbId: string)
+     → Inserta o incrementa (+1)
+     → Usa UPSERT (ON CONFLICT)
+  
+  3. getTotalLikes()
+     → Suma todos los likes
+     → COALESCE para manejar NULL
+end note
+
+note right of controller
+  **Controlador de Likes:**
+  
+  • getMovieLikes(req, res)
+    - Extrae imdbId de params
+    - Llama a model.getLikesCount()
+    - Retorna LikeResponse
+  
+  • incrementMovieLike(req, res)
+    - Extrae imdbId de params
+    - Llama a model.incrementLike()
+    - Retorna LikeResponse
+  
+  • getTotalLikes(req, res)
+    - Sin parámetros
+    - Llama a model.getTotalLikes()
+    - Retorna TotalLikesResponse
+  
+  **Error Handling:**
+  • Try-catch en cada método
+  • Status 500 en errores
+  • Logging de errores
+end note
+
+note left of validator
+  **Validación de imdbId:**
+  
+  Regex: /^tt\\d{7,}$/
+  
+  ✓ Válidos:
+  • tt0111161 (7 dígitos)
+  • tt0362120 (7 dígitos)
+  • tt10000000 (8 dígitos)
+  
+  ✗ Inválidos:
+  • tt123 (muy corto)
+  • 0111161 (sin 'tt')
+  • tt-111161 (caracteres especiales)
+  
+  **Respuesta error:**
+  Status: 400
+  Body: {
+    success: false,
+    message: "Invalid imdbId format..."
+  }
+end note
+
+legend right
+  |= Símbolo |= Significado |
+  | <back:#LightBlue>   </back> | Cliente HTTP |
+  | <back:#LightGreen>   </back> | Express App |
+  | <back:#Pink>   </back> | Middlewares |
+  | <back:#Cyan>   </back> | Routes |
+  | <back:#Yellow>   </back> | Controllers |
+  | <back:#Orange>   </back> | Models |
+  | <back:#Purple>   </back> | Database |
+  
+  **Estados HTTP:**
+  • 200 OK - Operación exitosa
+  • 400 Bad Request - Validación fallida
+  • 500 Internal Server Error - Error del servidor
+  
+  **Características:**
+  • CORS habilitado (*)
+  • Logging de todas las requests
+  • Validación de formato imdbId
+  • Transacciones atómicas en DB
+  • Constraints en base de datos
+endlegend
+
+@enduml

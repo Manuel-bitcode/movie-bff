@@ -1,0 +1,434 @@
+{
+	"info": {
+		"_postman_id": "movie-bff-likes-collection",
+		"name": "Movie BFF - Sistema de Likes",
+		"description": "Colección de pruebas para validar el sistema de likes del Backend BFF\n\n**Issue #3:** Base de datos PostgreSQL para likes\n\n**Endpoints incluidos:**\n- Health Check\n- Obtener likes de una película\n- Incrementar like de una película\n- Obtener total de likes\n\n**Base URL:** http://localhost:3000",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que el status sea 200",
+							"pm.test(\"Status code es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Validar estructura de respuesta",
+							"pm.test(\"Respuesta tiene estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('status');",
+							"    pm.expect(jsonData).to.have.property('timestamp');",
+							"    pm.expect(jsonData).to.have.property('service');",
+							"});",
+							"",
+							"// Validar valores",
+							"pm.test(\"Status es OK\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.status).to.equal('OK');",
+							"});",
+							"",
+							"pm.test(\"Service es movie-bff\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.service).to.equal('movie-bff');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "Endpoint de health check para verificar que el servidor está funcionando correctamente."
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Likes de Película",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar status 200",
+							"pm.test(\"Status code es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Validar estructura de respuesta (LikeResponse)",
+							"pm.test(\"Respuesta cumple con interface LikeResponse\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    ",
+							"    // Validar propiedades principales",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    ",
+							"    // Validar tipos",
+							"    pm.expect(jsonData.success).to.be.a('boolean');",
+							"    pm.expect(jsonData.data).to.be.an('object');",
+							"    pm.expect(jsonData.message).to.be.a('string');",
+							"});",
+							"",
+							"// Validar estructura del data",
+							"pm.test(\"data tiene imdbId y likes\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData.data).to.have.property('imdbId');",
+							"    pm.expect(jsonData.data).to.have.property('likes');",
+							"    ",
+							"    // Validar tipos específicos",
+							"    pm.expect(jsonData.data.imdbId).to.be.a('string');",
+							"    pm.expect(jsonData.data.likes).to.be.a('number');",
+							"});",
+							"",
+							"// Validar que success sea true",
+							"pm.test(\"success es true\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.equal(true);",
+							"});",
+							"",
+							"// Validar que likes sea >= 0",
+							"pm.test(\"likes es mayor o igual a 0\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.likes).to.be.at.least(0);",
+							"});",
+							"",
+							"// Guardar likes actuales para la siguiente prueba",
+							"pm.test(\"Guardar likes actuales en variable\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.environment.set(\"currentLikes\", jsonData.data.likes);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/movies/:imdbId/likes",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						":imdbId",
+						"likes"
+					],
+					"variable": [
+						{
+							"key": "imdbId",
+							"value": "tt0362120",
+							"description": "IMDb ID de la película (ej: Scary Movie 4)"
+						}
+					]
+				},
+				"description": "Obtiene la cantidad de likes de una película específica por su IMDb ID.\n\n**Valida:**\n- Estructura LikeResponse\n- Tipos de datos correctos\n- Likes >= 0"
+			},
+			"response": []
+		},
+		{
+			"name": "Incrementar Like de Película",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar status 200",
+							"pm.test(\"Status code es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Validar estructura de respuesta (LikeResponse)",
+							"pm.test(\"Respuesta cumple con interface LikeResponse\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    ",
+							"    pm.expect(jsonData.success).to.be.a('boolean');",
+							"    pm.expect(jsonData.data).to.be.an('object');",
+							"    pm.expect(jsonData.message).to.be.a('string');",
+							"});",
+							"",
+							"// Validar estructura del data",
+							"pm.test(\"data tiene imdbId y likes\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData.data).to.have.property('imdbId');",
+							"    pm.expect(jsonData.data).to.have.property('likes');",
+							"    ",
+							"    pm.expect(jsonData.data.imdbId).to.be.a('string');",
+							"    pm.expect(jsonData.data.likes).to.be.a('number');",
+							"});",
+							"",
+							"// Validar que success sea true",
+							"pm.test(\"success es true\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.equal(true);",
+							"});",
+							"",
+							"// Validar que el like se incrementó",
+							"pm.test(\"Like se incrementó correctamente\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    const previousLikes = parseInt(pm.environment.get(\"currentLikes\") || 0);",
+							"    ",
+							"    pm.expect(jsonData.data.likes).to.equal(previousLikes + 1);",
+							"});",
+							"",
+							"// Actualizar variable de likes actuales",
+							"pm.test(\"Actualizar likes actuales\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.environment.set(\"currentLikes\", jsonData.data.likes);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/movies/:imdbId/like",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						":imdbId",
+						"like"
+					],
+					"variable": [
+						{
+							"key": "imdbId",
+							"value": "tt0362120",
+							"description": "IMDb ID de la película"
+						}
+					]
+				},
+				"description": "Incrementa en 1 el contador de likes de una película.\n\n**Valida:**\n- Estructura LikeResponse\n- Like se incrementó en 1\n- Tipos de datos correctos"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener Total de Likes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar status 200",
+							"pm.test(\"Status code es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Validar estructura de respuesta (TotalLikesResponse)",
+							"pm.test(\"Respuesta cumple con interface TotalLikesResponse\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    ",
+							"    pm.expect(jsonData.success).to.be.a('boolean');",
+							"    pm.expect(jsonData.data).to.be.an('object');",
+							"    pm.expect(jsonData.message).to.be.a('string');",
+							"});",
+							"",
+							"// Validar estructura del data",
+							"pm.test(\"data tiene totalLikes\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData.data).to.have.property('totalLikes');",
+							"    pm.expect(jsonData.data.totalLikes).to.be.a('number');",
+							"});",
+							"",
+							"// Validar que success sea true",
+							"pm.test(\"success es true\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.equal(true);",
+							"});",
+							"",
+							"// Validar que totalLikes sea >= 0",
+							"pm.test(\"totalLikes es mayor o igual a 0\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.totalLikes).to.be.at.least(0);",
+							"});",
+							"",
+							"// Validar que totalLikes sea razonable (mayor que 0 si hay datos de prueba)",
+							"pm.test(\"totalLikes es un número razonable\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    // Con los datos de prueba, debería ser al menos 228 (42+128+35+15+8)",
+							"    pm.expect(jsonData.data.totalLikes).to.be.at.least(228);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/likes/total",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"likes",
+						"total"
+					]
+				},
+				"description": "Obtiene la suma total de likes de todas las películas en el sistema.\n\n**Valida:**\n- Estructura TotalLikesResponse\n- totalLikes >= 0\n- Tipos de datos correctos"
+			},
+			"response": []
+		},
+		{
+			"name": "Película Nueva (Primera vez)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que la película nueva comienza con 1 like",
+							"pm.test(\"Nueva película tiene 1 like\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.likes).to.equal(1);",
+							"});",
+							"",
+							"pm.test(\"Respuesta exitosa\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.equal(true);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/movies/:imdbId/like",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						":imdbId",
+						"like"
+					],
+					"variable": [
+						{
+							"key": "imdbId",
+							"value": "tt9999999",
+							"description": "IMDb ID de una película que no existe en la BD"
+						}
+					]
+				},
+				"description": "Prueba que al dar like a una película nueva (que no está en la BD), se crea con 1 like.\n\n**Valida:**\n- UPSERT funciona correctamente\n- Primera vez = 1 like"
+			},
+			"response": []
+		},
+		{
+			"name": "Error - IMDb ID Inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que devuelve error 400",
+							"pm.test(\"Status code es 400 Bad Request\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"// Validar estructura de error",
+							"pm.test(\"Respuesta de error tiene estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData.success).to.equal(false);",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/movies/:imdbId/like",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"movies",
+						":imdbId",
+						"like"
+					],
+					"variable": [
+						{
+							"key": "imdbId",
+							"value": "invalid-id",
+							"description": "ID inválido (no formato IMDb)"
+						}
+					]
+				},
+				"description": "Prueba que la validación de IMDb ID funciona correctamente.\n\n**Valida:**\n- Retorna error 400\n- success = false\n- Mensaje de error presente"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}

@@ -16,13 +16,18 @@ nvm use
 
 ```
 movie-bff/
+├── database/
+│   └── init.sql                  # Script de inicialización de PostgreSQL
 ├── src/
 │   ├── app.ts                    # Configuración de Express
 │   ├── server.ts                 # Punto de entrada del servidor
 │   ├── config/
-│   │   └── config.ts             # Configuración centralizada
+│   │   ├── config.ts             # Configuración centralizada
+│   │   └── database.ts           # Pool de conexiones PostgreSQL
 │   ├── controllers/
 │   │   └── movieController.ts    # Lógica de negocio
+│   ├── models/
+│   │   └── likeModel.ts          # Modelo de datos para likes
 │   ├── routes/
 │   │   ├── movieRoutes.ts        # Rutas de películas
 │   │   └── healthRoutes.ts       # Ruta de health check
@@ -32,7 +37,7 @@ movie-bff/
 │       └── movie.types.ts        # Tipos e interfaces TypeScript
 ├── dist/                         # Código compilado (generado)
 ├── Dockerfile                    # Configuración Docker (comentado)
-├── docker-compose.yml            # Orquestación Docker (comentado)
+├── docker-compose.yml            # Orquestación Docker (PostgreSQL)
 ├── .dockerignore                 # Exclusiones Docker
 ├── .eslintrc.json                # Configuración de ESLint
 ├── .eslintignore                 # Exclusiones de ESLint
@@ -41,7 +46,8 @@ movie-bff/
 ├── .gitignore
 ├── tsconfig.json                 # Configuración de TypeScript
 ├── package.json
-└── README.md
+├── README.md
+└── DATABASE-SETUP.md             # Guía de configuración de PostgreSQL
 ```
 
 ## 🚀 Instalación y Uso
@@ -162,7 +168,64 @@ GET /api/movies
 
 ---
 
-## 🐳 Docker
+### Sistema de Likes ⭐
+
+> 📖 **Documentación completa:** Ver [LIKES_SYSTEM.md](./LIKES_SYSTEM.md) para detalles técnicos y ejemplos
+
+#### Obtener likes de una película
+```http
+GET /api/movies/:id/likes
+```
+**Ejemplo:** `GET /api/movies/tt0362120/likes`
+
+**Respuesta:**
+```json
+{
+  "success": true,
+  "data": {
+    "imdbId": "tt0362120",
+    "likes": 43
+  },
+  "message": "Likes obtenidos correctamente"
+}
+```
+
+#### Incrementar like de una película
+```http
+POST /api/movies/:id/like
+```
+**Ejemplo:** `POST /api/movies/tt0362120/like`
+
+**Respuesta:**
+```json
+{
+  "success": true,
+  "data": {
+    "imdbId": "tt0362120",
+    "likes": 44
+  },
+  "message": "Like incrementado correctamente"
+}
+```
+
+#### Obtener total de likes
+```http
+GET /api/likes/total
+```
+**Respuesta:**
+```json
+{
+  "success": true,
+  "data": {
+    "totalLikes": 12345
+  },
+  "message": "Total de likes obtenido correctamente"
+}
+```
+
+---
+
+## � Docker
 
 ### Archivos incluidos:
 - `Dockerfile` - Define cómo construir la imagen (con comentarios explicativos)
@@ -263,7 +326,33 @@ npm run docker:up
 
 ---
 
-## 🛠️ Stack Tecnológico
+## � Imagen Docker de PostgreSQL
+
+Este proyecto incluye una **imagen Docker personalizada** de PostgreSQL con la base de datos pre-configurada y datos de prueba incluidos.
+
+**📦 Imagen publicada en Docker Hub:** [`wilmerleon/movie-bff-postgres`](https://hub.docker.com/r/wilmerleon/movie-bff-postgres)
+
+### Características:
+- ✅ Base de datos `movie_bff` pre-inicializada
+- ✅ Tabla `movie_likes` con 6 películas de prueba
+- ✅ Contraseña configurable via `.env`
+- ✅ Health check integrado
+- ✅ Volúmenes persistentes
+
+### Uso rápido:
+```bash
+# Levantar PostgreSQL con Docker Compose
+docker-compose up -d postgres
+
+# O pull directo desde Docker Hub
+docker pull wilmerleon/movie-bff-postgres:latest
+```
+
+📖 **Documentación completa:** Ver [DOCKER_IMAGE.md](DOCKER_IMAGE.md)
+
+---
+
+## �🛠️ Stack Tecnológico
 
 ### Runtime & Lenguaje
 - **Node.js** v20.12.2
@@ -286,7 +375,10 @@ npm run docker:up
 
 Este proyecto está bajo la licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
-## 👤 Autor
+---
 
-**Manuel Martinez**
+## 👥 Autores
+
+- **Manuel Martinez** - Desarrollo inicial y arquitectura
+- **Wílmer E. León** - Patrones de diseño Back-end y base de datos
 

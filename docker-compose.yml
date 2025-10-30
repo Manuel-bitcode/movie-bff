@@ -1,51 +1,92 @@
 version: '3.8'
 
 services:
-  app:
-    # Nombre del contenedor (aparece en 'docker ps')
-    container_name: movie-bff
-    
-    # Configuración de construcción de la imagen
-    build: 
-      context: .              # Usa el directorio actual como contexto
-      dockerfile: Dockerfile  # Archivo Dockerfile a usar
-    
-    # Mapeo de puertos: host:contenedor
-    # ${PORT:-3001}
-    ports:
-      - "3001:3001"
-    
-    # Variables de entorno que se pasan al contenedor
-    environment:
-      - PORT=${PORT:-3001}              # Puerto de la aplicación (default: 3001)
-      - NODE_ENV=${NODE_ENV:-production} # Entorno de Node.js (default: production)
-      - API_KEY=${API_KEY:-}             # API Key opcional (default: vacío)
-    
-    networks:
-      movie-network:
-        aliases:
-          - movie-bff
-    
-    # Política de reinicio: se reinicia automáticamente si falla
-    # Opciones: "no", "always", "on-failure", "unless-stopped"
+  # ====================================
+  # Servicio PostgreSQL
+  # ====================================
+  postgres:
+    # Imagen personalizada en Docker Hub con datos inicializados
+    # También disponible: postgres:16-alpine (sin datos)
+    image: wilmerleon/movie-bff-postgres:latest
+    container_name: movie-bff-postgres
     restart: unless-stopped
     
-    # Health Check: verifica que la aplicación esté funcionando
-    healthcheck:
-      # Comando que ejecuta para verificar salud (debe retornar 0 si OK)
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
-      interval: 30s      # Cada cuánto tiempo verifica (cada 30 segundos)
-      timeout: 10s       # Tiempo máximo de espera por respuesta
-      retries: 3         # Intentos antes de marcar como "unhealthy"
-      start_period: 40s  # Tiempo de gracia inicial antes de empezar a verificar
+    # Variables de entorno para PostgreSQL
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-1234}
+      POSTGRES_DB: ${DB_NAME:-movie_bff}
     
-    # Configuración de logs para evitar que crezcan infinitamente
+    # Mapeo de puertos
+    ports:
+      - "${DB_PORT:-5433}:5432"
+    
+    # Volúmenes para persistencia y script de inicialización
+    volumes:
+      # Montar script de inicialización (se ejecuta automáticamente)
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Persistir datos de la base de datos
+      - postgres_data:/var/lib/postgresql/data
+    
+    # Health check para PostgreSQL
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+    # Configuración de logs
     logging:
-      driver: "json-file"  # Tipo de driver de logs
+      driver: "json-file"
       options:
-        max-size: "10m"    # Tamaño máximo por archivo de log (10 megabytes)
-        max-file: "3"      # Número máximo de archivos de log (mantiene 3)
+        max-size: "10m"
+        max-file: "3"
 
-networks:
-  movie-network:
-    external: true
+  # ====================================
+  # Servicio Backend
+  # ====================================
+  app:
+    container_name: movie-bff
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    
+    ports:
+      - "${PORT:-3000}:3000"
+    
+    environment:
+      - DOCKER_ENV=true
+      - PORT=3000
+      - NODE_ENV=${NODE_ENV:-production}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-movie_bff}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-1234}
+      - OMDB_API_KEY=${OMDB_API_KEY:-}
+    
+    depends_on:
+      postgres:
+        condition: service_healthy
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ====================================
+# Volúmenes
+# ====================================
+volumes:
+  postgres_data:
+    driver: local

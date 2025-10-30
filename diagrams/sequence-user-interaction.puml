@@ -1,0 +1,149 @@
+@startuml Flujo de Interacción Usuario - Frontend - Backend - Database
+!theme plain
+
+title Secuencia Completa: Usuario Like en Película
+
+actor "Usuario" as user
+participant "Next.js\n(movie-webapp:3000)" as webapp
+participant "Express.js\n(movie-bff:3001)" as bff
+participant "LikeController" as controller
+participant "LikeModel" as model
+database "PostgreSQL\n(postgres:5432)" as db
+
+== Carga Inicial de Películas ==
+
+user -> webapp : Abre navegador\nhttp://localhost:3000
+activate webapp
+
+webapp -> webapp : Movies Component\ncarga 10 Cards
+
+webapp -> bff : GET /api/movies
+activate bff
+
+bff -> controller : movieController.getMovies()
+activate controller
+
+controller -> model : getBulkLikes(imdbIds[])
+activate model
+
+model -> db : SELECT * FROM movie_likes\nWHERE id = ANY($1)
+activate db
+db --> model : [{id, likes}, ...]
+deactivate db
+
+model --> controller : Map<imdbId, likes>
+deactivate model
+
+controller -> controller : Enriquecer películas\ncon ratings (OMDB) + likes (BD)
+
+controller --> bff : JSON: [{id, title, rating, likes}, ...]
+deactivate controller
+
+bff --> webapp : Response 200 OK\n10 películas
+deactivate bff
+
+webapp --> user : Renderiza 10 Cards\ncon botón Like
+deactivate webapp
+
+== Usuario Da Like a una Película ==
+
+user -> webapp : Click botón Like\nen Card "tt0362120"
+activate webapp
+
+webapp -> webapp : handleLike()
+webapp -> webapp : CounterContext.incrementLikes()
+
+webapp -> bff : POST /api/movies/tt0362120/like
+activate bff
+
+bff -> controller : likeController.incrementMovieLike(req, res)
+activate controller
+
+controller -> model : incrementLike('tt0362120')
+activate model
+
+model -> db : INSERT INTO movie_likes (id, likes)\nVALUES ($1, 1)\nON CONFLICT (id)\nDO UPDATE SET likes = likes + 1\nRETURNING likes
+activate db
+db --> model : { likes: 43 }
+deactivate db
+
+model --> controller : 43
+deactivate model
+
+controller --> bff : JSON: {success: true, data: {imdbId, likes: 43}}
+deactivate controller
+
+bff --> webapp : Response 200 OK
+deactivate bff
+
+webapp -> webapp : Actualiza UI\nCard muestra ❤️ rojo
+webapp --> user : Like registrado\nContador local +1
+deactivate webapp
+
+== GlobalCounter Obtiene Total de Likes ==
+
+user -> webapp : Observa GlobalCounter
+activate webapp
+
+webapp -> bff : GET /api/likes/total
+activate bff
+
+bff -> controller : likeController.getTotalLikes(req, res)
+activate controller
+
+controller -> model : getTotalLikes()
+activate model
+
+model -> db : SELECT SUM(likes) AS total\nFROM movie_likes
+activate db
+db --> model : { total: 230 }
+deactivate db
+
+model --> controller : 230
+deactivate model
+
+controller --> bff : JSON: {success: true, data: {total: 230}}
+deactivate controller
+
+bff --> webapp : Response 200 OK
+deactivate bff
+
+webapp --> user : Muestra "230 ❤️"\nen GlobalCounter
+deactivate webapp
+
+== Usuario Quita Like ==
+
+user -> webapp : Click botón Like\nde nuevo (quitar)
+activate webapp
+
+webapp -> webapp : handleLike()
+webapp -> webapp : CounterContext.decrementLikes()
+
+webapp -> bff : DELETE /api/movies/tt0362120/like\n(o endpoint similar)
+activate bff
+
+bff -> controller : likeController.decrementMovieLike(req, res)
+activate controller
+
+controller -> model : decrementLike('tt0362120')
+activate model
+
+model -> db : UPDATE movie_likes\nSET likes = likes - 1\nWHERE id = $1 AND likes > 0\nRETURNING likes
+activate db
+db --> model : { likes: 42 }
+deactivate db
+
+model --> controller : 42
+deactivate model
+
+controller --> bff : JSON: {success: true, data: {imdbId, likes: 42}}
+deactivate controller
+
+bff --> webapp : Response 200 OK
+deactivate bff
+
+webapp -> webapp : Actualiza UI\nCard muestra ♡ gris
+webapp --> user : Like removido\nContador local -1
+deactivate webapp
+
+@enduml
