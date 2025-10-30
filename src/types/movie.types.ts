@@ -36,3 +36,22 @@ export interface ApiResponse<T> {
   count?: number;
 }
 
+// Respuesta de like individual
+export interface LikeResponse {
+  success: boolean;
+  data: {
+    imdbId: string;
+    likes: number;
+  };
+  message?: string;
+}
+
+// Respuesta de contador global
+export interface TotalLikesResponse {
+  success: boolean;
+  data: {
+    totalLikes: number;
+  };
+  message?: string;
+}
+
