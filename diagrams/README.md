@@ -65,6 +65,34 @@ Esta carpeta contiene los diagramas de arquitectura, base de datos y deployment 
   - API externa
   - Middlewares
 
+### 7. Arquitectura Backend con Sistema de Likes ⭐ NUEVO
+- **Archivo:** `backend-architecture-likes.puml`
+- **Descripción:** Arquitectura completa del backend con sistema de likes implementado
+- **Incluye:**
+  - Entry points (server.ts, app.ts)
+  - Middlewares (logger, validateImdbId, cors, error handler)
+  - Routes Layer (healthRoutes, movieRoutes, likesTotalRoutes)
+  - Controllers (movieController, likeController)
+  - Models (likeModel)
+  - Configuration (config.ts, database.ts con detección dinámica Docker/Local)
+  - PostgreSQL (tabla movie_likes)
+  - OMDB API externa
+  - TypeScript types
+  - Notas detalladas de cada componente
+
+### 8. Flujo de Datos - Sistema de Likes ⭐ NUEVO
+- **Archivo:** `likes-data-flow.puml`
+- **Descripción:** Diagramas de secuencia detallados del sistema de likes
+- **Incluye:**
+  - **Caso 1:** GET /api/movies/:id/likes - Obtener likes de película
+  - **Caso 2:** POST /api/movies/:id/like - Incrementar like
+  - **Caso 3:** GET /api/likes/total - Total de likes global
+  - **Caso 4:** Error Handling - Validación de imdbId
+  - Flujo completo: Cliente → Logger → Validator → Routes → Controller → Model → Database
+  - Manejo de casos (película existente, película nueva, errores)
+  - Queries SQL detalladas
+  - Respuestas JSON completas
+
 ## 🔄 Cómo Actualizar los Diagramas
 
 ### Requisitos
@@ -82,6 +110,8 @@ java -jar plantuml.jar diagrams/*.puml
 java -jar plantuml.jar diagrams/full-system-architecture.puml
 java -jar plantuml.jar diagrams/sequence-user-interaction.puml
 java -jar plantuml.jar diagrams/docker-deployment.puml
+java -jar plantuml.jar diagrams/backend-architecture-likes.puml
+java -jar plantuml.jar diagrams/likes-data-flow.puml
 ```
 
 ### Editar Diagramas
@@ -119,5 +149,6 @@ java -jar plantuml.jar diagrams/docker-deployment.puml
 
 ---
 
-**Última actualización:** Octubre 27, 2025  
+**Última actualización:** Octubre 30, 2025 (Issue #2 - Sistema de Likes)  
 **Desarrolladores:** Manuel Martinez & Wílmer E. León
+
