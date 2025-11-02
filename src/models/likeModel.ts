@@ -1,25 +1,20 @@
 import pool from '../config/database';
 
 /**
- * Modelo simple para gestionar likes de películas
+ * Modelo para gestionar likes de películas (basadas en TMDB)
  */
 export class LikeModel {
   /**
-   * Obtener likes de una película por su imdbID
-   * @param imdbId ID de IMDb de la película (ej: "tt0362120")
+   * Obtener likes de una película por su id (TMDB)
+   * @param movieId ID de TMDB de la película
    * @returns Cantidad de likes o 0 si no existe
    */
-  async getLikes(imdbId: string): Promise<number> {
+  async getLikes(movieId: string): Promise<number> {
     const client = await pool.connect();
     try {
       const query = 'SELECT likes FROM movie_likes WHERE id = $1';
-      const result = await client.query(query, [imdbId]);
-      
-      if (result.rows.length === 0) {
-        return 0; // Si no existe, retornar 0
-      }
-      
-      return result.rows[0].likes;
+      const result = await client.query(query, [movieId]);
+      return result.rows[0]?.likes || 0;
     } finally {
       client.release();
     }
@@ -28,10 +23,10 @@ export class LikeModel {
   /**
    * Incrementar likes de una película
    * Si la película no existe, la crea con 1 like
-   * @param imdbId ID de IMDb de la película
+   * @param movieId ID de TMDB
    * @returns Nueva cantidad de likes
    */
-  async incrementLike(imdbId: string): Promise<number> {
+  async incrementLike(movieId: string): Promise<number> {
     const client = await pool.connect();
     try {
       const query = `
@@ -41,8 +36,7 @@ export class LikeModel {
         DO UPDATE SET likes = movie_likes.likes + 1
         RETURNING likes
       `;
-      
-      const result = await client.query(query, [imdbId]);
+      const result = await client.query(query, [movieId]);
       return result.rows[0].likes;
     } finally {
       client.release();
@@ -50,11 +44,11 @@ export class LikeModel {
   }
 
   /**
-   * Obtener likes de múltiples películas en una sola query
-   * @param imdbIds Array de IMDb IDs
-   * @returns Map con imdbId como key y likes como value
+   * Obtener likes de múltiples películas en una sola query (optimización)
+   * @param movieIds Array de IDs de TMDB
+   * @returns Map con movieId como key y likes como value
    */
-  async getBulkLikes(imdbIds: string[]): Promise<Map<string, number>> {
+  async getBulkLikes(movieIds: string[]): Promise<Map<string, number>> {
     const client = await pool.connect();
     try {
       const query = `
@@ -62,14 +56,13 @@ export class LikeModel {
         FROM movie_likes
         WHERE id = ANY($1)
       `;
-      
-      const result = await client.query(query, [imdbIds]);
-      
+      const result = await client.query(query, [movieIds]);
+
       const likesMap = new Map<string, number>();
       result.rows.forEach(row => {
         likesMap.set(row.id, row.likes);
       });
-      
+
       return likesMap;
     } finally {
       client.release();
