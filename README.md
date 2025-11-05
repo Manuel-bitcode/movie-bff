@@ -145,25 +145,97 @@ GET /health
 
 ### Películas
 
-#### Obtener todas las películas
+#### Obtener películas populares 🎬
 ```http
 GET /api/movies
 ```
-**Respuesta:**
+
+**Descripción:**
+- Retorna las **10 películas más populares** de IMDb
+- Integración con **OMDB API** para datos completos
+- Incluye **conteo de likes** desde PostgreSQL
+
+**Requisitos:**
+- Variable de entorno `OMDB_API_KEY` configurada
+- Obtener API key gratis en: https://www.omdbapi.com/apikey.aspx
+
+**Respuesta exitosa:**
 ```json
 {
   "success": true,
   "data": [
     {
-      "id": 1,
+      "imdbId": "tt0111161",
       "title": "The Shawshank Redemption",
-      "year": 1994,
+      "year": "1994",
       "genre": "Drama",
-      "director": "Frank Darabont"
+      "director": "Frank Darabont",
+      "actors": "Tim Robbins, Morgan Freeman, Bob Gunton",
+      "plot": "Over the course of several years...",
+      "poster": "https://m.media-amazon.com/images/...",
+      "imdbRating": "9.3",
+      "imdbVotes": "2,800,000",
+      "runtime": "142 min",
+      "likes": 5
     }
   ],
-  "count": 1
+  "count": 10
 }
+```
+
+**Campos por película:**
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `imdbId` | string | ID único de IMDb (ej: `tt0111161`) |
+| `title` | string | Título de la película |
+| `year` | string | Año de lanzamiento |
+| `genre` | string | Géneros separados por comas |
+| `director` | string | Director(es) |
+| `actors` | string | Actores principales |
+| `plot` | string | Sinopsis breve |
+| `poster` | string | URL de la imagen del póster |
+| `imdbRating` | string | Calificación IMDb (0-10) |
+| `imdbVotes` | string | Cantidad de votos |
+| `runtime` | string | Duración (ej: `142 min`) |
+| `likes` | number | Conteo de likes desde base de datos |
+
+**Películas incluidas:**
+1. The Shawshank Redemption (1994)
+2. The Godfather (1972)
+3. The Dark Knight (2008)
+4. The Godfather Part II (1974)
+5. 12 Angry Men (1957)
+6. Schindler's List (1993)
+7. The Lord of the Rings: The Return of the King (2003)
+8. Pulp Fiction (1994)
+9. The Lord of the Rings: The Fellowship of the Ring (2001)
+10. Forrest Gump (1994)
+
+**Errores comunes:**
+```json
+// Sin API Key configurada
+{
+  "success": false,
+  "error": "OMDB API Key no configurada"
+}
+
+// API Key inválida
+{
+  "success": false,
+  "error": "Error obteniendo películas: Invalid API key!"
+}
+```
+
+**Configuración:**
+```bash
+# 1. Obtener API key en https://www.omdbapi.com/apikey.aspx
+# 2. Agregar al archivo .env
+OMDB_API_KEY=tu_clave_aqui
+
+# 3. Reiniciar servidor
+npm run dev
+# O con Docker:
+docker-compose restart app
 ```
 
 ---
