@@ -9,11 +9,11 @@ export const getMovieLikes = async (req: Request, res: Response): Promise<void> 
   try {
     const { id } = req.params;
     
-    // Validar que el ID sea un número (TMDB)
-    if (!id || !id.match(/^\d+$/)) {
+    // Validar que el ID sea válido (formato IMDb: ttXXXXXXX)
+    if (!id || !id.match(/^tt\d+$/)) {
       res.status(400).json({
         success: false,
-        error: 'ID inválido. Debe ser un número de TMDB'
+        error: 'ID de IMDb inválido. Debe tener el formato ttXXXXXXX'
       });
       return;
     }
@@ -23,7 +23,7 @@ export const getMovieLikes = async (req: Request, res: Response): Promise<void> 
     const response: LikeResponse = {
       success: true,
       data: {
-        id: id, // Aunque sea TMDB, mantenemos el campo para compatibilidad
+        imdbId: id,
         likes
       },
       message: 'Likes obtenidos correctamente'
@@ -47,11 +47,11 @@ export const incrementLike = async (req: Request, res: Response): Promise<void> 
   try {
     const { id } = req.params;
     
-    // Validar que el ID sea un número (TMDB)
-    if (!id || !id.match(/^\d+$/)) {
+    // Validar que el ID sea válido
+    if (!id || !id.match(/^tt\d+$/)) {
       res.status(400).json({
         success: false,
-        error: 'ID inválido. Debe ser un número de TMDB'
+        error: 'ID de IMDb inválido. Debe tener el formato ttXXXXXXX'
       });
       return;
     }
@@ -61,7 +61,7 @@ export const incrementLike = async (req: Request, res: Response): Promise<void> 
     const response: LikeResponse = {
       success: true,
       data: {
-        id: id,
+        imdbId: id,
         likes: newLikes
       },
       message: 'Like incrementado correctamente'

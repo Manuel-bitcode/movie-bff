@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { movieController } from '../controllers/movieController';
+import * as movieController from '../controllers/movieController';
 import * as likeController from '../controllers/likeController';
 
 const router = Router();
@@ -13,8 +13,7 @@ router.post('/:id/like', likeController.incrementLike);
 /**
  * Rutas de Movies
  */
-router.get('/', movieController.getPopularMovies.bind(movieController));
-
+router.get('/', movieController.getAllMovies);
 
 export default router;
 
