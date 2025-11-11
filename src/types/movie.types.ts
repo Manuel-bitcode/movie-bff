@@ -2,10 +2,8 @@ export interface Movie {
   id: number;
   title: string;
   year: number;
-  type: string;       // 'movie' por ahora
-  poster: string;     // URL del poster
-  rating: string;     // rating de TMDB
-  likes: number;      // likes obtenidos desde la BD
+  genre: string;
+  director: string;
 }
 
 /**
@@ -14,7 +12,7 @@ export interface Movie {
 export interface LikeResponse {
   success: boolean;
   data: {
-    id: string;   // ID de TMDB
+    imdbId: string;
     likes: number;
   };
   message?: string;

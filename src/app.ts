@@ -3,7 +3,6 @@ import cors from 'cors';
 import { logger } from './middlewares/logger';
 import movieRoutes from './routes/movieRoutes';
 import likesTotalRoutes from './routes/likesTotalRoutes';
-import likeRoutes from './routes/likeRoutes';
 import healthRoutes from './routes/healthRoutes'; 
 
 const app: Express = express();
@@ -28,7 +27,6 @@ app.get('/', (_req: Request, res: Response) => {
 
 // Routes
 app.use('/health', healthRoutes);
-app.use('/api/likes', likeRoutes); 
 app.use('/api/likes', likesTotalRoutes);
 app.use('/api/movies', movieRoutes);
 
