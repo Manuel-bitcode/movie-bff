@@ -23,8 +23,8 @@ services:
     
     # Volúmenes para persistencia y script de inicialización
     volumes:
-      # Montar script de inicialización (se ejecuta automáticamente)
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Montar scripts de inicialización (se ejecutan automáticamente)
+      - ./database:/docker-entrypoint-initdb.d
       # Persistir datos de la base de datos
       - postgres_data:/var/lib/postgresql/data
     
