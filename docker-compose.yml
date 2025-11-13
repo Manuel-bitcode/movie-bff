@@ -8,7 +8,6 @@ services:
     # Imagen personalizada en Docker Hub con datos inicializados
     # También disponible: postgres:16-alpine (sin datos)
     image: wilmerleon/movie-bff-postgres:latest
-    container_name: movie-bff-postgres
     restart: unless-stopped
     
     # Variables de entorno para PostgreSQL
@@ -46,7 +45,6 @@ services:
   # Servicio Backend
   # ====================================
   app:
-    container_name: movie-bff
     build: 
       context: .
       dockerfile: Dockerfile
