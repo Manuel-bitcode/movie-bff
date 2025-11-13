@@ -44,7 +44,44 @@ const waitForPostgres = async (retries = 20, delayMs = 1500): Promise<void> => {
   }
 };
 
+const ensureLikesSchema = async () => {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS movie_likes (
+      id SERIAL PRIMARY KEY,
+      imdb_id VARCHAR(20) UNIQUE NOT NULL,
+      likes_count INTEGER NOT NULL DEFAULT 0,
+      created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT likes_count_positive CHECK (likes_count >= 0)
+    )
+  `);
+
+  await pool.query(
+    'CREATE INDEX IF NOT EXISTS idx_movie_likes_imdb_id ON movie_likes(imdb_id)',
+  );
+
+  await pool.query(`
+    CREATE OR REPLACE FUNCTION update_updated_at_column()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        NEW.updated_at = CURRENT_TIMESTAMP;
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql
+  `);
+
+  await pool.query('DROP TRIGGER IF EXISTS trg_movie_likes_updated_at ON movie_likes');
+
+  await pool.query(`
+    CREATE TRIGGER trg_movie_likes_updated_at
+    BEFORE UPDATE ON movie_likes
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column()
+  `);
+};
+
 const truncateLikesTable = async () => {
+  await ensureLikesSchema();
   await pool.query('TRUNCATE TABLE movie_likes RESTART IDENTITY;');
 };
 
