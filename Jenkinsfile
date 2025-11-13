@@ -36,7 +36,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo '🧪 Ejecutando tests...'
-                sh 'npm test -- --coverage --ci'
+                sh 'DB_HOST=host.docker.internal npm test -- --coverage --ci'
             }
             post {
                 always {
