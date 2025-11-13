@@ -1,4 +1,4 @@
-import pool from './config/database';
+import pool, { ensureDatabaseConnection } from './config/database';
 import dotenv from 'dotenv';
 import { LikeModel } from './models/likeModel';
 
@@ -20,9 +20,12 @@ async function testDatabase() {
   console.log('🧪 Probando conexión a la base de datos PostgreSQL...\n');
 
   try {
+    await ensureDatabaseConnection();
+
     // Test 1: Obtener likes de una película existente
     console.log('Test 1: Obtener likes de tt0362120 (Scary Movie 4)');
-    const likes = await likeModel.getLikes('tt0362120');
+    await likeModel.createLikeEntry('tt0362120');
+    const likes = await likeModel.getLikesByImdbId('tt0362120');
     console.log(`✅ Likes: ${likes}\n`);
 
     // Test 2: Incrementar likes
@@ -35,14 +38,8 @@ async function testDatabase() {
     const newMovieLikes = await likeModel.incrementLike('tt9999999');
     console.log(`✅ Likes de película nueva: ${newMovieLikes}\n`);
 
-    // Test 4: Obtener likes en bulk
-    console.log('Test 4: Obtener likes de múltiples películas');
-    const bulkLikes = await likeModel.getBulkLikes(['tt0362120', 'tt3387520', 'tt0795461']);
-    console.log('✅ Bulk likes:', Object.fromEntries(bulkLikes));
-    console.log();
-
-    // Test 5: Total de likes
-    console.log('Test 5: Obtener total de likes');
+    // Test 4: Total de likes
+    console.log('Test 4: Obtener total de likes');
     const total = await likeModel.getTotalLikes();
     console.log(`✅ Total de likes: ${total}\n`);
 

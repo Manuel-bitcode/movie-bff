@@ -18,7 +18,7 @@ export const getMovieLikes = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    const likes = await likeModel.getLikes(id);
+    const likes = await likeModel.getLikesByImdbId(id);
     
     const response: LikeResponse = {
       success: true,

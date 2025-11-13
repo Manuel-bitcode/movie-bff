@@ -19,7 +19,7 @@ services:
     
     # Mapeo de puertos
     ports:
-      - "${DB_PORT:-5433}:5432"
+      - "${DB_PORT:-5432}:5432"
     
     # Volúmenes para persistencia y script de inicialización
     volumes:

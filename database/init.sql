@@ -1,28 +1,32 @@
 -- ====================================
 -- Base de Datos: movie_bff
--- Tabla: movie_likes (versión simple)
+-- Tabla: movie_likes (versión con persistencia)
 -- ====================================
 
--- Crear tabla de likes
+-- Crear tabla de likes con control de timestamps
 CREATE TABLE IF NOT EXISTS movie_likes (
-    id VARCHAR(20) PRIMARY KEY,           -- IMDb ID (ej: tt0362120)
-    likes INTEGER NOT NULL DEFAULT 0,     -- Cantidad de likes
-    CONSTRAINT likes_positive CHECK (likes >= 0)  -- No permitir likes negativos
+    id SERIAL PRIMARY KEY,
+    imdb_id VARCHAR(20) UNIQUE NOT NULL,
+    likes_count INTEGER NOT NULL DEFAULT 0,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT likes_count_positive CHECK (likes_count >= 0)
 );
 
--- Insertar datos de prueba (opcional)
-INSERT INTO movie_likes (id, likes) VALUES
-    ('tt0362120', 42),      -- Scary Movie 4
-    ('tt3387520', 128),     -- Scary Stories to Tell in the Dark
-    ('tt0795461', 35),      -- Scary Movie 5
-    ('tt9654108', 15),      -- The Scary House
-    ('tt1833879', 8)        -- Scary or Die
-ON CONFLICT (id) DO NOTHING;
+-- Crear índice para búsquedas rápidas por imdb_id
+CREATE INDEX IF NOT EXISTS idx_movie_likes_imdb_id ON movie_likes(imdb_id);
 
--- Crear índice para búsquedas rápidas (opcional pero recomendado)
-CREATE INDEX IF NOT EXISTS idx_movie_likes_id ON movie_likes(id);
+-- Trigger para actualizar updated_at en cada modificación
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
--- Comentarios para documentación
-COMMENT ON TABLE movie_likes IS 'Tabla simple para almacenar likes de películas';
-COMMENT ON COLUMN movie_likes.id IS 'IMDb ID único de la película';
-COMMENT ON COLUMN movie_likes.likes IS 'Cantidad total de likes de la película';
+DROP TRIGGER IF EXISTS trg_movie_likes_updated_at ON movie_likes;
+CREATE TRIGGER trg_movie_likes_updated_at
+BEFORE UPDATE ON movie_likes
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
