@@ -45,7 +45,9 @@ pipeline {
                         reportDir: 'coverage/lcov-report',
                         reportFiles: 'index.html',
                         reportName: 'Coverage Report',
-                        keepAll: true
+                        keepAll: true,
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true
                     ])
                 }
             }
