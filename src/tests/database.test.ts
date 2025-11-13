@@ -89,6 +89,7 @@ beforeAll(async () => {
   runCompose(['up', '-d', 'postgres']);
   await waitForPostgres();
   await ensureDatabaseConnection();
+  await ensureLikesSchema();
 });
 
 afterAll(async () => {
