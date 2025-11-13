@@ -59,7 +59,7 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        
+
         stage('Build Docker Image') {
             when {
                 anyOf {
@@ -71,11 +71,14 @@ pipeline {
             steps {
                 echo '🐳 Construyendo imagen Docker...'
                 script {
-                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
+                    // Reemplaza las barras / por guiones -
+                    safeTag = DOCKER_TAG.replaceAll('/', '-')
+                    echo "🔧 Tag Docker saneado: ${safeTag}"
+                    docker.build("${DOCKER_IMAGE}:${safeTag}")
                 }
             }
         }
-        
+
         stage('Push to Docker Hub') {
             when {
                 branch 'main'
@@ -84,8 +87,8 @@ pipeline {
                 echo '🚀 Publicando imagen en Docker Hub...'
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-credentials') {
-                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
-                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push('latest')
+                        docker.image("${DOCKER_IMAGE}:${safeTag}").push()
+                        docker.image("${DOCKER_IMAGE}:${safeTag}").push('latest')
                     }
                 }
             }
