@@ -57,14 +57,21 @@ pipeline {
             post {
                 always {
                     junit allowEmptyResults: true, testResults: 'junit.xml'
-                    publishHTML([
-                        allowMissing: true,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'coverage/lcov-report',
-                        reportFiles: 'index.html',
-                        reportName: 'Coverage Report'
-                    ])
+                    script {
+                        // Only publish HTML coverage report if it exists in the workspace.
+                        if (fileExists('coverage/lcov-report/index.html')) {
+                            publishHTML([
+                                allowMissing: true,
+                                alwaysLinkToLastBuild: true,
+                                keepAll: true,
+                                reportDir: 'coverage/lcov-report',
+                                reportFiles: 'index.html',
+                                reportName: 'Coverage Report'
+                            ])
+                        } else {
+                            echo "Coverage report not found (coverage/lcov-report/index.html). Skipping publishHTML."
+                        }
+                    }
                 }
             }
         }
@@ -82,7 +89,7 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+                stage('Build Docker Image') {
             when {
                 anyOf {
                     branch 'main'
@@ -92,7 +99,15 @@ pipeline {
             }
             steps {
                 echo '🐳 Construyendo imagen Docker...'
-                sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ."
+                                // If the docker CLI is not available on the agent (common on
+                                // some shared Jenkins setups), skip the image build gracefully.
+                                sh '''
+                                if command -v docker >/dev/null 2>&1; then
+                                    docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} .
+                                else
+                                    echo "[Jenkins] docker CLI not found on agent. Skipping Docker image build."
+                                fi
+                                '''
             }
         }
 
@@ -109,14 +124,21 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            when { branch 'main' }
-            steps {
-                echo '🚀 Desplegando aplicación...'
-                sh 'docker-compose down || true'
-                sh 'docker-compose up -d --build'
-            }
-        }
+                stage('Deploy') {
+                        when { branch 'main' }
+                        steps {
+                                echo '🚀 Desplegando aplicación...'
+                                // If docker is not available, skip deploy step and log a message.
+                                sh '''
+                                if command -v docker >/dev/null 2>&1; then
+                                    docker-compose down || true
+                                    docker-compose up -d --build
+                                else
+                                    echo "[Jenkins] docker CLI not found on agent. Skipping deploy."
+                                fi
+                                '''
+                        }
+                }
     }
 
     post {
