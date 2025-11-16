@@ -51,7 +51,8 @@ pipeline {
         stage('Test') {
             steps {
                 echo '🧪 Ejecutando tests (script CI con fallback)...'
-                sh './scripts/ci/run-tests-ci.sh'
+                // Ejecutar con bash para evitar problemas de permiso en el bit ejecutable
+                sh 'bash ./scripts/ci/run-tests-ci.sh'
             }
             post {
                 always {

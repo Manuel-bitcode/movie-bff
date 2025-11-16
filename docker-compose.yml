@@ -89,11 +89,11 @@ services:
       - GIT_USERNAME=${GIT_USERNAME:-git}
       # NOTA: no establecer GIT_TOKEN en el archivo, pásalo por variable de entorno en tu shell o CI
       - GIT_TOKEN=${GIT_TOKEN}
-  # Usar DOCKER_HOST para conectar al daemon de Docker sobre TCP cuando
-  # se expone desde Docker Desktop (host.docker.internal:2375).
-  # NOTA: debes habilitar la exposición del daemon en Docker Desktop o
-  # en la VM que corre Docker para que esto funcione.
-  - DOCKER_HOST=tcp://host.docker.internal:2375
+      # Usar DOCKER_HOST para conectar al daemon de Docker sobre TCP cuando
+      # se expone desde Docker Desktop (host.docker.internal:2375).
+      # NOTA: debes habilitar la exposición del daemon en Docker Desktop o
+      # en la VM que corre Docker para que esto funcione.
+      - DOCKER_HOST=tcp://host.docker.internal:2375
     logging:
       driver: "json-file"
       options:
