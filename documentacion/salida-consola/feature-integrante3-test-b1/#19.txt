@@ -1,0 +1,178 @@
+Started by user admin
+ > git rev-parse --resolve-git-dir /var/jenkins_home/caches/git-5551c0c00f418877158f3133b9ad2052/.git # timeout=10
+Setting origin to https://github.com/Manuel-bitcode/movie-bff.git
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching origin...
+Fetching upstream changes from origin
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git config --get remote.origin.url # timeout=10
+ > git fetch --no-tags --force --progress -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
+Seen branch in repository origin/feature/integrante1-test-f1
+Seen branch in repository origin/feature/integrante2-test-f2
+Seen branch in repository origin/feature/integrante3-test-b1
+Seen branch in repository origin/feature/integrante4-test-b2
+Seen branch in repository origin/feature/integrante5-test-b3
+Seen branch in repository origin/main
+Seen 6 remote branches
+Obtained Jenkinsfile from be5265446a1e899bea9faebcbfb2ff503e2a19e1
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/anch_feature_integrante3-test-b1
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: git
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/anch_feature_integrante3-test-b1/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision be5265446a1e899bea9faebcbfb2ff503e2a19e1 (feature/integrante3-test-b1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f be5265446a1e899bea9faebcbfb2ff503e2a19e1 # timeout=10
+Commit message: "ci: support Docker TCP DOCKER_HOST for Jenkins + remove socket mount; add Node fallback"
+ > git rev-list --no-walk 118c017ad9ae5fc4ec40c6f7bb976cbcef483b0e # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] echo
+📦 Clonando repositorio...
+[Pipeline] checkout
+The recommended git tool is: git
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/anch_feature_integrante3-test-b1/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision be5265446a1e899bea9faebcbfb2ff503e2a19e1 (feature/integrante3-test-b1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f be5265446a1e899bea9faebcbfb2ff503e2a19e1 # timeout=10
+Commit message: "ci: support Docker TCP DOCKER_HOST for Jenkins + remove socket mount; add Node fallback"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+[Pipeline] echo
+📚 Instalando dependencias de Node.js en entorno reproducible (docker-compose)...
+[Pipeline] sh
++ set -e
++ docker-compose run --rm app npm ci
+Failed to initialize: unable to resolve docker endpoint: invalid bind address format: ${DOCKER_HOST:-tcp://host.docker.internal:2375}
++ echo [Jenkins] docker-compose falló, ejecutando npm ci localmente
+[Jenkins] docker-compose falló, ejecutando npm ci localmente
++ npm ci
+npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 569 packages, and audited 570 packages in 34s
+
+101 packages are looking for funding
+  run `npm fund` for details
+
+18 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Lint)
+[Pipeline] echo
+🔍 Ejecutando linter en entorno reproducible (docker-compose)...
+[Pipeline] sh
++ set -e
++ docker-compose run --rm app npm run lint
+Failed to initialize: unable to resolve docker endpoint: invalid bind address format: ${DOCKER_HOST:-tcp://host.docker.internal:2375}
++ echo [Jenkins] docker-compose falló, ejecutando lint localmente
+[Jenkins] docker-compose falló, ejecutando lint localmente
++ npm run lint
+
+> movie-bff@1.0.0 lint
+> eslint . --ext .ts
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] echo
+🧪 Ejecutando tests (script CI con fallback)...
+[Pipeline] sh
++ ./scripts/ci/run-tests-ci.sh
+/var/jenkins_home/workspace/anch_feature_integrante3-test-b1@tmp/durable-53f61844/script.sh.copy: 1: ./scripts/ci/run-tests-ci.sh: Permission denied
+Post stage
+[Pipeline] junit
+Recording test results
+[Checks API] No suitable checks publisher found.
+[Pipeline] publishHTML
+[htmlpublisher] Archiving HTML reports...
+[htmlpublisher] Archiving at BUILD level /var/jenkins_home/workspace/anch_feature_integrante3-test-b1/coverage/lcov-report to Coverage_20Report
+ERROR: Specified HTML directory '/var/jenkins_home/workspace/anch_feature_integrante3-test-b1/coverage/lcov-report' does not exist.
+[htmlpublisher] Copying recursive using current thread
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+Stage "Build" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+Stage "Build Docker Image" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push to Docker Hub)
+Stage "Push to Docker Hub" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+Stage "Deploy" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+🧹 Limpiando workspace...
+[Pipeline] echo
+❌ Pipeline falló. Revisar logs.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 126
+Finished: FAILURE
