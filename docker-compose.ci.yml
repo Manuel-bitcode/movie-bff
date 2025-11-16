@@ -12,8 +12,10 @@ services:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-1234}
       POSTGRES_DB: ${DB_NAME:-movie_bff}
-    ports:
-      - "${DB_PORT:-5433}:5432"
+    # In CI we avoid binding the Postgres port to the Docker host to prevent
+    # collisions on shared runners. Tests access Postgres via the compose
+    # network using port 5432.
+    ports: []
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
