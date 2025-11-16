@@ -4,36 +4,24 @@ services:
   # ====================================
   # Servicio PostgreSQL
   # ====================================
-  # Servicio Jenkins (Entorno unificado frontend + backend)
-  # ====================================
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins-unified
+  postgres:
+    image: wilmerleon/movie-bff-postgres:latest
+    container_name: movie-bff-postgres
     restart: unless-stopped
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      # Monta el socket para permitir builds docker desde Jenkins
-      - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      # Evita el wizard inicial para instalaciones automatizadas
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-# ====================================
-# Volúmenes
-volumes:
-  postgres_data:
-    driver: local
-  jenkins_home:
-    driver: local
-    # Configuración de logs
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-1234}
+      POSTGRES_DB: ${DB_NAME:-movie_bff}
+    ports:
+      - "${DB_PORT:-5433}:5432"
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     logging:
       driver: "json-file"
       options:
@@ -45,13 +33,11 @@ volumes:
   # ====================================
   app:
     container_name: movie-bff
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
-    
     ports:
       - "${PORT:-3000}:3000"
-    
     environment:
       - DOCKER_ENV=true
       - PORT=3000
@@ -62,20 +48,37 @@ volumes:
       - DB_USER=${DB_USER:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-1234}
       - OMDB_API_KEY=${OMDB_API_KEY:-}
-    
     depends_on:
       postgres:
         condition: service_healthy
-    
     restart: unless-stopped
-    
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ====================================
+  # Servicio Jenkins (Entorno unificado frontend + backend)
+  # ====================================
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins-unified
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
     logging:
       driver: "json-file"
       options:
