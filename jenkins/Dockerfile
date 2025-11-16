@@ -3,6 +3,7 @@ FROM jenkins/jenkins:lts
 # Switch to root to install plugins
 USER root
 
+
 # Install recommended plugins for pipeline + docker + nodejs + reports
 RUN jenkins-plugin-cli --plugins \
   git \
@@ -15,6 +16,15 @@ RUN jenkins-plugin-cli --plugins \
   htmlpublisher \
   credentials-binding \
   workflow-aggregator || true
+
+# Install docker-compose
+USER root
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -L "https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose && \
+    ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+USER jenkins
 
 # Ensure permissions are correct when copying init scripts
 USER jenkins
