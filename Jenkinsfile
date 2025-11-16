@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'movie-bff'
         NODE_ENV = 'test'
-        // Point to Docker daemon via TCP for Docker Desktop / host exposure
-        DOCKER_HOST = '${DOCKER_HOST:-tcp://host.docker.internal:2375}'
+    // Point to Docker daemon via TCP for Docker Desktop / host exposure
+    DOCKER_HOST = 'tcp://host.docker.internal:2375'
         DOCKER_IMAGE_NAME = 'movie-bff'
         DOCKER_TAG = "${env.BRANCH_NAME.replaceAll('/', '-')}-${env.BUILD_NUMBER}"
         DOCKER_REGISTRY = 'docker.io'
