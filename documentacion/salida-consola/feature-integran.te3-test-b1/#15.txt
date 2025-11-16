@@ -1,0 +1,495 @@
+Branch indexing
+ > git rev-parse --resolve-git-dir /var/jenkins_home/caches/git-5551c0c00f418877158f3133b9ad2052/.git # timeout=10
+Setting origin to https://github.com/Manuel-bitcode/movie-bff.git
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching origin...
+Fetching upstream changes from origin
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git config --get remote.origin.url # timeout=10
+using GIT_ASKPASS to set credentials GitHub Token movie-bff
+ > git fetch --no-tags --force --progress -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
+Seen branch in repository origin/feature/integrante1-test-f1
+Seen branch in repository origin/feature/integrante2-test-f2
+Seen branch in repository origin/feature/integrante3-test-b1
+Seen branch in repository origin/feature/integrante4-test-b2
+Seen branch in repository origin/feature/integrante5-test-b3
+Seen branch in repository origin/main
+Seen 6 remote branches
+Obtained Jenkinsfile from 135a9c5bf645c84a03c9609021fa3c6b31dc63e6
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/_bff_feature_integrante3-test-b1
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: git
+using credential github-credentials
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/_bff_feature_integrante3-test-b1/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+using GIT_ASKPASS to set credentials GitHub Token movie-bff
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 135a9c5bf645c84a03c9609021fa3c6b31dc63e6 (feature/integrante3-test-b1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 135a9c5bf645c84a03c9609021fa3c6b31dc63e6 # timeout=10
+Commit message: "fix(jenkins): sanitizar DOCKER_TAG reemplazando / por - para formato válido"
+ > git rev-list --no-walk c89963719dd127a1bbdea2c4d1829f9e2764595d # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Tool Install)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🔄 Clonando repositorio...
+[Pipeline] checkout
+The recommended git tool is: git
+using credential github-credentials
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/_bff_feature_integrante3-test-b1/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+using GIT_ASKPASS to set credentials GitHub Token movie-bff
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 135a9c5bf645c84a03c9609021fa3c6b31dc63e6 (feature/integrante3-test-b1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 135a9c5bf645c84a03c9609021fa3c6b31dc63e6 # timeout=10
+Commit message: "fix(jenkins): sanitizar DOCKER_TAG reemplazando / por - para formato válido"
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+📦 Instalando dependencias...
+[Pipeline] sh
++ npm install
+
+up to date, audited 570 packages in 2s
+
+101 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Lint)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🔍 Ejecutando linter...
+[Pipeline] sh
++ npm run lint
+
+> movie-bff@1.0.0 lint
+> eslint . --ext .ts
+
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🧪 Ejecutando tests...
+[Pipeline] sh
++ npm test -- --coverage --ci
+
+> movie-bff@1.0.0 test
+> jest --coverage --ci
+
+  console.log
+    [dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    [2025-11-11T06:45:50.807Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-11T06:45:51.486Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-11T06:45:51.815Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-11T06:45:52.082Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-11T06:45:52.444Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-11T06:45:52.702Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-11T06:45:53.023Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-11T06:45:53.327Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-11T06:45:53.630Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-11T06:45:53.935Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at log (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at log (src/controllers/movieController.ts:34:13)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at log (src/controllers/movieController.ts:77:13)
+
+(node:4720) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS src/__tests__/movies.test.ts (5.879 s)
+  B1: GET /api/movies - Endpoint de películas
+    ✓ Debe responder con status 200 OK (705 ms)
+    ✓ Debe retornar exactamente 10 películas (329 ms)
+    ✓ Debe tener la estructura correcta de respuesta (268 ms)
+    ✓ Cada película debe tener todos los campos obligatorios (295 ms)
+    ✓ Cada película debe tener imdbId con formato válido (ttXXXXXXX) (323 ms)
+    ✓ El campo likes debe ser un número mayor o igual a 0 (318 ms)
+    ✓ El campo imdbRating debe ser un string con formato válido (303 ms)
+    ✓ El endpoint debe responder en menos de 5 segundos (303 ms)
+    ✓ Debe incluir al menos algunas películas populares conocidas (302 ms)
+    ✓ El campo poster debe ser una URL válida (229 ms)
+
+----------------------|---------|----------|---------|---------|-------------------
+File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+----------------------|---------|----------|---------|---------|-------------------
+All files             |   40.46 |    14.58 |   21.05 |   38.55 |                   
+ src                  |   81.81 |        0 |       0 |   81.81 |                   
+  app.ts              |   81.81 |        0 |       0 |   81.81 | 25,35-36,46       
+ src/config           |    8.33 |    20.83 |       0 |    8.33 |                   
+  config.ts           |     100 |     62.5 |     100 |     100 | 9-10,12           
+  database.ts         |       0 |        0 |       0 |       0 | 1-47              
+ src/controllers      |    43.1 |       10 |      50 |   37.73 |                   
+  likeController.ts   |   20.58 |        0 |       0 |    12.9 | 9-36,47-73,84-98  
+  movieController.ts  |      75 |       50 |     100 |   72.72 | 45-46,69-70,86-87 
+ src/middlewares      |    42.1 |    16.66 |      50 |   41.17 |                   
+  logger.ts           |     100 |       50 |     100 |     100 | 10                
+  validateImdbId.ts   |       0 |        0 |       0 |       0 | 7-34              
+ src/models           |       0 |        0 |       0 |       0 |                   
+  likeModel.ts        |       0 |        0 |       0 |       0 | 1-96              
+ src/routes           |   94.44 |      100 |       0 |   94.44 |                   
+  healthRoutes.ts     |      80 |      100 |       0 |      80 | 13                
+  likesTotalRoutes.ts |     100 |      100 |     100 |     100 |                   
+  movieRoutes.ts      |     100 |      100 |     100 |     100 |                   
+----------------------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       10 passed, 10 total
+Snapshots:   0 total
+Time:        11.498 s
+Ran all test suites.
+Post stage
+[Pipeline] junit
+Recording test results
+[Checks API] No suitable checks publisher found.
+[Pipeline] publishHTML
+[htmlpublisher] Archiving HTML reports...
+[htmlpublisher] Archiving at BUILD level /var/jenkins_home/workspace/_bff_feature_integrante3-test-b1/coverage/lcov-report to Coverage_20Report
+[htmlpublisher] Copying recursive using current thread
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🏗️ Compilando TypeScript...
+[Pipeline] sh
++ npm run build
+
+> movie-bff@1.0.0 build
+> tsc
+
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🐳 Construyendo imagen Docker...
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ docker build -t movie-bff:feature-integrante3-test-b1-15 .
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 1.27kB 0.0s done
+#1 DONE 0.3s
+
+#2 [internal] load metadata for docker.io/library/node:20.12.2-alpine
+#2 DONE 2.8s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 482B 0.0s done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/node:20.12.2-alpine@sha256:7a91aa397f2e2dfbfcdad2e2d72599f374e0b0172be1d86eeb73f1d33f36a4b2
+#5 resolve docker.io/library/node:20.12.2-alpine@sha256:7a91aa397f2e2dfbfcdad2e2d72599f374e0b0172be1d86eeb73f1d33f36a4b2 0.1s done
+#5 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 24.86MB 2.4s done
+#4 DONE 2.5s
+
+#6 [2/7] RUN apk add --no-cache wget
+#6 CACHED
+
+#7 [3/7] WORKDIR /app
+#7 CACHED
+
+#8 [4/7] COPY package*.json ./
+#8 DONE 0.2s
+
+#9 [5/7] RUN npm install
+#9 61.98 npm WARN deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+#9 62.83 npm WARN deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+#9 63.01 npm WARN deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+#9 63.54 npm WARN deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+#9 63.65 npm WARN deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+#9 63.78 npm WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#9 63.94 npm WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#9 64.19 npm WARN deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#9 68.11 npm WARN deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#9 71.54 
+#9 71.54 added 565 packages, and audited 566 packages in 1m
+#9 71.54 
+#9 71.54 101 packages are looking for funding
+#9 71.55   run `npm fund` for details
+#9 71.55 
+#9 71.55 found 0 vulnerabilities
+#9 71.56 npm notice 
+#9 71.56 npm notice New major version of npm available! 10.5.0 -> 11.6.2
+#9 71.56 npm notice Changelog: <https://github.com/npm/cli/releases/tag/v11.6.2>
+#9 71.56 npm notice Run `npm install -g npm@11.6.2` to update!
+#9 71.56 npm notice 
+#9 DONE 72.7s
+
+#10 [6/7] COPY . .
+#10 DONE 0.6s
+
+#11 [7/7] RUN npm run build
+#11 1.053 
+#11 1.053 > movie-bff@1.0.0 build
+#11 1.053 > tsc
+#11 1.053 
+#11 DONE 4.5s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 11.8s done
+#12 exporting manifest sha256:8509b7add775fbed0ecbee3c89b8407062d1921c62f2e9aaafa5d667f359e23e 0.0s done
+#12 exporting config sha256:fd3ed9ff46c34a576fe20a05055f20f7ca492238ec859dca206ae8fddca2cdb7 0.0s done
+#12 exporting attestation manifest sha256:a0a4495e72b0dde7bcf7708a046d4670fc61823f6fff90c94e641ea7d5a8493d
+#12 exporting attestation manifest sha256:a0a4495e72b0dde7bcf7708a046d4670fc61823f6fff90c94e641ea7d5a8493d 0.1s done
+#12 exporting manifest list sha256:e410332fdb326db55f6beed239cd666e51f8e484da688a6d2211e8f36cf56562 0.0s done
+#12 naming to docker.io/library/movie-bff:feature-integrante3-test-b1-15
+#12 naming to docker.io/library/movie-bff:feature-integrante3-test-b1-15 done
+#12 unpacking to docker.io/library/movie-bff:feature-integrante3-test-b1-15
+#12 unpacking to docker.io/library/movie-bff:feature-integrante3-test-b1-15 7.9s done
+#12 DONE 20.0s
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push to Docker Hub)
+Stage "Push to Docker Hub" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+Stage "Deploy" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+✅ Pipeline ejecutado exitosamente
+[Pipeline] echo
+Branch: feature/integrante3-test-b1
+[Pipeline] echo
+Build: 15
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="10" failures="0" errors="0" time="22.826">
-  <testsuite name="B1: GET /api/movies - Endpoint de películas" errors="0" failures="0" skipped="0" timestamp="2025-11-14T05:30:50" time="22.428" tests="10">
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Debe responder con status 200 OK" time="2.451">
+<testsuites name="jest tests" tests="10" failures="0" errors="0" time="9.11">
+  <testsuite name="B1: GET /api/movies - Endpoint de películas" errors="0" failures="0" skipped="0" timestamp="2025-11-16T18:39:04" time="8.606" tests="10">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Debe responder con status 200 OK" time="0.51">
     </testcase>
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Debe retornar exactamente 10 películas" time="4.978">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Debe retornar exactamente 10 películas" time="0.335">
     </testcase>
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Debe tener la estructura correcta de respuesta" time="2.19">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Debe tener la estructura correcta de respuesta" time="0.238">
     </testcase>
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Cada película debe tener todos los campos obligatorios" time="3.61">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Cada película debe tener todos los campos obligatorios" time="0.376">
     </testcase>
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Cada película debe tener imdbId con formato válido (ttXXXXXXX)" time="1.407">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Cada película debe tener imdbId con formato válido (ttXXXXXXX)" time="0.242">
     </testcase>
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="El campo likes debe ser un número mayor o igual a 0" time="2.047">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="El campo likes debe ser un número mayor o igual a 0" time="0.223">
     </testcase>
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="El campo imdbRating debe ser un string con formato válido" time="0.202">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="El campo imdbRating debe ser un string con formato válido" time="0.34">
     </testcase>
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="El endpoint debe responder en menos de 5 segundos" time="0.156">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="El endpoint debe responder en menos de 5 segundos" time="0.271">
     </testcase>
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Debe incluir al menos algunas películas populares conocidas" time="0.159">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="Debe incluir al menos algunas películas populares conocidas" time="0.222">
     </testcase>
-    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="El campo poster debe ser una URL válida" time="0.156">
+    <testcase classname="B1: GET /api/movies - Endpoint de películas" name="El campo poster debe ser una URL válida" time="0.263">
     </testcase>
   </testsuite>
 </testsuites>

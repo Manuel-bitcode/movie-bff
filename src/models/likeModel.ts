@@ -10,18 +10,24 @@ export class LikeModel {
    * @returns Cantidad de likes o 0 si no existe
    */
   async getLikes(imdbId: string): Promise<number> {
-    const client = await pool.connect();
     try {
-      const query = 'SELECT likes FROM movie_likes WHERE id = $1';
-      const result = await client.query(query, [imdbId]);
-      
-      if (result.rows.length === 0) {
-        return 0; // Si no existe, retornar 0
+      const client = await pool.connect();
+      try {
+        const query = 'SELECT likes FROM movie_likes WHERE id = $1';
+        const result = await client.query(query, [imdbId]);
+
+        if (result.rows.length === 0) {
+          return 0; // Si no existe, retornar 0
+        }
+
+        return result.rows[0].likes;
+      } finally {
+        client.release();
       }
-      
-      return result.rows[0].likes;
-    } finally {
-      client.release();
+    } catch (err) {
+      // Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0
+  console.warn('⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:', (err as any) && (err as any).message ? (err as any).message : err);
+      return 0;
     }
   }
 
@@ -32,20 +38,25 @@ export class LikeModel {
    * @returns Nueva cantidad de likes
    */
   async incrementLike(imdbId: string): Promise<number> {
-    const client = await pool.connect();
     try {
-      const query = `
-        INSERT INTO movie_likes (id, likes)
-        VALUES ($1, 1)
-        ON CONFLICT (id)
-        DO UPDATE SET likes = movie_likes.likes + 1
-        RETURNING likes
-      `;
-      
-      const result = await client.query(query, [imdbId]);
-      return result.rows[0].likes;
-    } finally {
-      client.release();
+      const client = await pool.connect();
+      try {
+        const query = `
+          INSERT INTO movie_likes (id, likes)
+          VALUES ($1, 1)
+          ON CONFLICT (id)
+          DO UPDATE SET likes = movie_likes.likes + 1
+          RETURNING likes
+        `;
+
+        const result = await client.query(query, [imdbId]);
+        return result.rows[0].likes;
+      } finally {
+        client.release();
+      }
+    } catch (err) {
+  console.warn('⚠️ LikeModel.incrementLike - fallo en la BD, devolviendo 0:', (err as any) && (err as any).message ? (err as any).message : err);
+      return 0;
     }
   }
 
@@ -55,24 +66,29 @@ export class LikeModel {
    * @returns Map con imdbId como key y likes como value
    */
   async getBulkLikes(imdbIds: string[]): Promise<Map<string, number>> {
-    const client = await pool.connect();
     try {
-      const query = `
-        SELECT id, likes
-        FROM movie_likes
-        WHERE id = ANY($1)
-      `;
-      
-      const result = await client.query(query, [imdbIds]);
-      
-      const likesMap = new Map<string, number>();
-      result.rows.forEach(row => {
-        likesMap.set(row.id, row.likes);
-      });
-      
-      return likesMap;
-    } finally {
-      client.release();
+      const client = await pool.connect();
+      try {
+        const query = `
+          SELECT id, likes
+          FROM movie_likes
+          WHERE id = ANY($1)
+        `;
+
+        const result = await client.query(query, [imdbIds]);
+
+        const likesMap = new Map<string, number>();
+        result.rows.forEach(row => {
+          likesMap.set(row.id, row.likes);
+        });
+
+        return likesMap;
+      } finally {
+        client.release();
+      }
+    } catch (err) {
+  console.warn('⚠️ LikeModel.getBulkLikes - fallo en la BD, devolviendo map vacío:', (err as any) && (err as any).message ? (err as any).message : err);
+      return new Map<string, number>();
     }
   }
 
@@ -81,13 +97,18 @@ export class LikeModel {
    * @returns Suma total de likes
    */
   async getTotalLikes(): Promise<number> {
-    const client = await pool.connect();
     try {
-      const query = 'SELECT COALESCE(SUM(likes), 0) AS total FROM movie_likes';
-      const result = await client.query(query);
-      return parseInt(result.rows[0].total, 10);
-    } finally {
-      client.release();
+      const client = await pool.connect();
+      try {
+        const query = 'SELECT COALESCE(SUM(likes), 0) AS total FROM movie_likes';
+        const result = await client.query(query);
+        return parseInt(result.rows[0].total, 10);
+      } finally {
+        client.release();
+      }
+    } catch (err) {
+  console.warn('⚠️ LikeModel.getTotalLikes - fallo en la BD, devolviendo 0:', (err as any) && (err as any).message ? (err as any).message : err);
+      return 0;
     }
   }
 }

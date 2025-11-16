@@ -68,7 +68,9 @@ services:
   # Servicio Jenkins (Entorno unificado frontend + backend)
   # ====================================
   jenkins:
-    image: jenkins/jenkins:lts
+    build:
+      context: ./jenkins
+      dockerfile: Dockerfile
     container_name: jenkins-unified
     restart: unless-stopped
     ports:
@@ -79,6 +81,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - JENKINS_ADMIN_USER=${JENKINS_ADMIN_USER:-admin}
+      - JENKINS_ADMIN_PASSWORD=${JENKINS_ADMIN_PASSWORD:-admin123}
+      # Opcionales para la creación automática del Multibranch y credenciales
+      - GIT_REPO_URL=${GIT_REPO_URL:-https://github.com/Manuel-bitcode/movie-bff.git}
+      - MULTIBRANCH_JOB_NAME=${MULTIBRANCH_JOB_NAME:-movie-bff-multibranch}
+      - GIT_CREDENTIALS_ID=${GIT_CREDENTIALS_ID:-github-token}
+      - GIT_USERNAME=${GIT_USERNAME:-git}
+      # NOTA: no establecer GIT_TOKEN en el archivo, pásalo por variable de entorno en tu shell o CI
+      - GIT_TOKEN=${GIT_TOKEN}
     logging:
       driver: "json-file"
       options:
@@ -93,27 +104,3 @@ volumes:
     driver: local
   jenkins_home:
     driver: local
-
-# ====================================
-# Servicio Jenkins (Entorno unificado frontend + backend)
-# ====================================
-services:
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins-unified
-    restart: unless-stopped
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      # Monta el socket para permitir builds docker desde Jenkins
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      # Evita el wizard inicial para instalaciones automatizadas
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
