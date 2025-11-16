@@ -1,19 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Script para uso en CI: levanta postgres y ejecuta los tests dentro del servicio `app`
+# Script para uso en CI: intenta levantar postgres y ejecutar los tests dentro
+# del servicio `app` usando docker-compose. Si no hay acceso al socket de
+# Docker (permission denied) o docker-compose falla, usa un fallback local
+# ejecutando `npm ci` y `npm test` directamente en el contenedor Jenkins.
+
 ROOT_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT_DIR"
 
-#!/bin/bash
+echo "[CI] Intentando ejecutar tests con docker-compose (modo preferido)..."
+set +e
+docker-compose up -d postgres
+DC_EXIT=$?
 set -e
 
-echo "[CI] Levantando servicios con docker-compose..."
-docker-compose up -d postgres
+if [ "$DC_EXIT" -ne 0 ]; then
+  echo "[CI] docker-compose no pudo arrancar servicios (exit $DC_EXIT). Usando fallback local." >&2
+  echo "[CI] Ejecutando fallback: npm ci && npm test"
+  npm ci
+  npm test -- --ci
+  exit $?
+fi
 
 echo "[CI] Esperando a que Postgres esté listo..."
 for i in {1..30}; do
-  docker-compose exec -T postgres pg_isready -U postgres && break
+  if docker-compose exec -T postgres pg_isready -U postgres >/dev/null 2>&1; then
+    break
+  fi
   sleep 1
 done
 

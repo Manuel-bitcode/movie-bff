@@ -4,6 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'movie-bff'
         NODE_ENV = 'test'
+        // Point to Docker daemon via TCP for Docker Desktop / host exposure
+        DOCKER_HOST = '${DOCKER_HOST:-tcp://host.docker.internal:2375}'
         DOCKER_IMAGE_NAME = 'movie-bff'
         DOCKER_TAG = "${env.BRANCH_NAME.replaceAll('/', '-')}-${env.BUILD_NUMBER}"
         DOCKER_REGISTRY = 'docker.io'
@@ -22,20 +24,33 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo '📚 Instalando dependencias de Node.js en entorno reproducible (docker-compose)...'
-                sh 'docker-compose run --rm app npm ci'
+                                // Intentar docker-compose, si falla (p. ej. permission denied) usar npm local
+                                sh '''
+                                set -e
+                                docker-compose run --rm app npm ci || (
+                                    echo "[Jenkins] docker-compose falló, ejecutando npm ci localmente"
+                                    npm ci
+                                )
+                                '''
             }
         }
 
         stage('Lint') {
             steps {
                 echo '🔍 Ejecutando linter en entorno reproducible (docker-compose)...'
-                sh 'docker-compose run --rm app npm run lint'
+                                sh '''
+                                set -e
+                                docker-compose run --rm app npm run lint || (
+                                    echo "[Jenkins] docker-compose falló, ejecutando lint localmente"
+                                    npm run lint
+                                )
+                                '''
             }
         }
 
         stage('Test') {
             steps {
-                echo '🧪 Ejecutando tests en entorno reproducible (docker-compose)...'
+                echo '🧪 Ejecutando tests (script CI con fallback)...'
                 sh './scripts/ci/run-tests-ci.sh'
             }
             post {
@@ -56,7 +71,13 @@ pipeline {
         stage('Build') {
             steps {
                 echo '🏗️ Compilando TypeScript en entorno reproducible (docker-compose)...'
-                sh 'docker-compose run --rm app npm run build'
+                                sh '''
+                                set -e
+                                docker-compose run --rm app npm run build || (
+                                    echo "[Jenkins] docker-compose falló, compilando localmente"
+                                    npm run build
+                                )
+                                '''
             }
         }
 

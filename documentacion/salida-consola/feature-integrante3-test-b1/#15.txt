@@ -1,0 +1,130 @@
+Branch indexing
+ > git rev-parse --resolve-git-dir /var/jenkins_home/caches/git-5551c0c00f418877158f3133b9ad2052/.git # timeout=10
+Setting origin to https://github.com/Manuel-bitcode/movie-bff.git
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching origin...
+Fetching upstream changes from origin
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git config --get remote.origin.url # timeout=10
+ > git fetch --no-tags --force --progress -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
+Seen branch in repository origin/feature/integrante1-test-f1
+Seen branch in repository origin/feature/integrante2-test-f2
+Seen branch in repository origin/feature/integrante3-test-b1
+Seen branch in repository origin/feature/integrante4-test-b2
+Seen branch in repository origin/feature/integrante5-test-b3
+Seen branch in repository origin/main
+Seen 6 remote branches
+Obtained Jenkinsfile from 4899cc7a99180720fadec9f346abae2f17139a57
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/anch_feature_integrante3-test-b1
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: git
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/anch_feature_integrante3-test-b1/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 4899cc7a99180720fadec9f346abae2f17139a57 (feature/integrante3-test-b1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 4899cc7a99180720fadec9f346abae2f17139a57 # timeout=10
+Commit message: "ci: instala docker-compose en Jenkins para pipeline reproducible"
+ > git rev-list --no-walk 374ec242b21403942297cad2058834dd4df4fb4e # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] echo
+📦 Clonando repositorio...
+[Pipeline] checkout
+The recommended git tool is: git
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/anch_feature_integrante3-test-b1/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 4899cc7a99180720fadec9f346abae2f17139a57 (feature/integrante3-test-b1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 4899cc7a99180720fadec9f346abae2f17139a57 # timeout=10
+Commit message: "ci: instala docker-compose en Jenkins para pipeline reproducible"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+[Pipeline] echo
+📚 Instalando dependencias de Node.js en entorno reproducible (docker-compose)...
+[Pipeline] sh
++ docker-compose run --rm app npm ci
+time="2025-11-16T19:25:28Z" level=warning msg="The \"GIT_TOKEN\" variable is not set. Defaulting to a blank string."
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json?all=1&filters=%7B%22label%22%3A%7B%22com.docker.compose.config-hash%22%3Atrue%2C%22com.docker.compose.project%3Danch_feature_integrante3-test-b1%22%3Atrue%7D%7D": dial unix /var/run/docker.sock: connect: permission denied
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Lint)
+Stage "Lint" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+Stage "Test" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+Stage "Build" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+Stage "Build Docker Image" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push to Docker Hub)
+Stage "Push to Docker Hub" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+Stage "Deploy" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+🧹 Limpiando workspace...
+[Pipeline] echo
+❌ Pipeline falló. Revisar logs.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 1
+Finished: FAILURE

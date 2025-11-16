@@ -27,6 +27,14 @@ RUN apt-get update && \
   groupadd -f docker && usermod -aG docker jenkins
 USER jenkins
 
+# Install Node.js (LTS) and npm so Jenkins container can run npm/test when
+# docker socket is not available on the host (fallback path for CI).
+USER root
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm --version && node --version
+USER jenkins
+
 # Ensure permissions are correct when copying init scripts
 USER jenkins
 
