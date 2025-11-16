@@ -21,17 +21,15 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo '📚 Instalando dependencias de Node.js...'
-                sh 'node --version'
-                sh 'npm --version'
-                sh 'npm ci'
+                echo '📚 Instalando dependencias de Node.js en entorno reproducible (docker-compose)...'
+                sh 'docker-compose run --rm app npm ci'
             }
         }
 
         stage('Lint') {
             steps {
-                echo '🔍 Ejecutando linter...'
-                sh 'npm run lint'
+                echo '🔍 Ejecutando linter en entorno reproducible (docker-compose)...'
+                sh 'docker-compose run --rm app npm run lint'
             }
         }
 
@@ -57,8 +55,8 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo '🏗️ Compilando TypeScript...'
-                sh 'npm run build'
+                echo '🏗️ Compilando TypeScript en entorno reproducible (docker-compose)...'
+                sh 'docker-compose run --rm app npm run build'
             }
         }
 
@@ -110,7 +108,7 @@ pipeline {
         }
         always {
             echo '🧹 Limpiando workspace...'
-            cleanWs()
+            // cleanWs() eliminado para evitar error por falta de plugin
         }
     }
 }
