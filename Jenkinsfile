@@ -25,7 +25,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                echo '� Instalando dependencias de Node.js...'
+                echo '📚 Instalando dependencias de Node.js...'
                 sh 'node --version'
                 sh 'npm --version'
                 sh 'npm ci'
@@ -118,4 +118,3 @@ pipeline {
         }
     }
 }
-                        alwaysLinkToLastBuild: true,        
