@@ -11,8 +11,10 @@ services:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-1234}
       POSTGRES_DB: ${DB_NAME:-movie_bff}
-    ports:
-      - "${DB_PORT:-5433}:5432"
+    # En CI no se debe exponer el puerto de Postgres al host para evitar colisiones.
+    # Para desarrollo local, puedes descomentar la siguiente línea si necesitas acceder desde fuera del compose:
+    # - "${DB_PORT:-5433}:5432"
+    ports: []
     volumes:
       # NOTE: binding a host file (./database/init.sql) into the postgres container
       # can fail when docker-compose is executed from inside another container
