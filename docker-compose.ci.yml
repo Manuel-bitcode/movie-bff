@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: docker/postgres/Dockerfile
     image: movie-bff-postgres:ci
-    container_name: movie-bff-postgres
+    
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}

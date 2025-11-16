@@ -6,7 +6,6 @@ services:
   # ====================================
   postgres:
     image: wilmerleon/movie-bff-postgres:latest
-    container_name: movie-bff-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
@@ -40,7 +39,6 @@ services:
   # Servicio Backend
   # ====================================
   app:
-    container_name: movie-bff
     build:
       context: .
       dockerfile: Dockerfile
@@ -79,7 +77,7 @@ services:
     build:
       context: ./jenkins
       dockerfile: Dockerfile
-    container_name: jenkins-unified
+    
     restart: unless-stopped
     ports:
       - "8080:8080"
