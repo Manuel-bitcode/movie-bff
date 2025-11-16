@@ -1,0 +1,2042 @@
+Branch indexing
+ > git rev-parse --resolve-git-dir /var/jenkins_home/caches/git-5551c0c00f418877158f3133b9ad2052/.git # timeout=10
+Setting origin to https://github.com/Manuel-bitcode/movie-bff.git
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching origin...
+Fetching upstream changes from origin
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git config --get remote.origin.url # timeout=10
+ > git fetch --no-tags --force --progress -- origin +refs/heads/*:refs/remotes/origin/* # timeout=10
+Seen branch in repository origin/feature/integrante1-test-f1
+Seen branch in repository origin/feature/integrante2-test-f2
+Seen branch in repository origin/feature/integrante3-test-b1
+Seen branch in repository origin/feature/integrante4-test-b2
+Seen branch in repository origin/feature/integrante5-test-b3
+Seen branch in repository origin/main
+Seen 6 remote branches
+Obtained Jenkinsfile from f22470e6fd65bff1cf89c68a49694ce9e061f949
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/anch_feature_integrante3-test-b1@2
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: git
+No credentials specified
+Cloning the remote Git repository
+Cloning with configured refspecs honoured and without tags
+Cloning repository https://github.com/Manuel-bitcode/movie-bff.git
+ > git init /var/jenkins_home/workspace/anch_feature_integrante3-test-b1@2 # timeout=10
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision f22470e6fd65bff1cf89c68a49694ce9e061f949 (feature/integrante3-test-b1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f22470e6fd65bff1cf89c68a49694ce9e061f949 # timeout=10
+Commit message: "ci: avoid bind-mounting init.sql (fix mount error when docker-compose runs inside Jenkins)"
+ > git rev-list --no-walk f22470e6fd65bff1cf89c68a49694ce9e061f949 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] echo
+📦 Clonando repositorio...
+[Pipeline] checkout
+The recommended git tool is: git
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/anch_feature_integrante3-test-b1@2/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision f22470e6fd65bff1cf89c68a49694ce9e061f949 (feature/integrante3-test-b1)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f22470e6fd65bff1cf89c68a49694ce9e061f949 # timeout=10
+Commit message: "ci: avoid bind-mounting init.sql (fix mount error when docker-compose runs inside Jenkins)"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+[Pipeline] echo
+📚 Instalando dependencias de Node.js en entorno reproducible (docker-compose)...
+[Pipeline] sh
++ set -e
++ docker-compose run --rm app npm ci
+time="2025-11-16T20:16:35Z" level=warning msg="The \"GIT_TOKEN\" variable is not set. Defaulting to a blank string."
+ Network anch_feature_integrante3-test-b12_default  Creating
+ Network anch_feature_integrante3-test-b12_default  Created
+ Volume "anch_feature_integrante3-test-b12_jenkins_home"  Creating
+ Volume "anch_feature_integrante3-test-b12_jenkins_home"  Created
+ Volume "anch_feature_integrante3-test-b12_postgres_data"  Creating
+ Volume "anch_feature_integrante3-test-b12_postgres_data"  Created
+ Container movie-bff-postgres  Creating
+Error response from daemon: Conflict. The container name "/movie-bff-postgres" is already in use by container "4bbeb482356fba03d5a9467ab02bc4c7e812e6e2f23ec9739036da0e15836d13". You have to remove (or rename) that container to be able to reuse that name.
++ echo [Jenkins] docker-compose falló, ejecutando npm ci localmente
+[Jenkins] docker-compose falló, ejecutando npm ci localmente
++ npm ci
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 569 packages, and audited 570 packages in 36s
+
+101 packages are looking for funding
+  run `npm fund` for details
+
+18 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Lint)
+[Pipeline] echo
+🔍 Ejecutando linter en entorno reproducible (docker-compose)...
+[Pipeline] sh
++ set -e
++ docker-compose run --rm app npm run lint
+time="2025-11-16T20:17:16Z" level=warning msg="The \"GIT_TOKEN\" variable is not set. Defaulting to a blank string."
+ Container movie-bff-postgres  Creating
+Error response from daemon: Conflict. The container name "/movie-bff-postgres" is already in use by container "4bbeb482356fba03d5a9467ab02bc4c7e812e6e2f23ec9739036da0e15836d13". You have to remove (or rename) that container to be able to reuse that name.
++ echo [Jenkins] docker-compose falló, ejecutando lint localmente
+[Jenkins] docker-compose falló, ejecutando lint localmente
++ npm run lint
+
+> movie-bff@1.0.0 lint
+> eslint . --ext .ts
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] echo
+🧪 Ejecutando tests (script CI con fallback)...
+[Pipeline] sh
++ bash ./scripts/ci/run-tests-ci.sh
+[CI] Intentando ejecutar tests con docker-compose (modo preferido)...
+time="2025-11-16T20:17:33Z" level=warning msg="The \"GIT_TOKEN\" variable is not set. Defaulting to a blank string."
+ Container movie-bff-postgres  Creating
+Error response from daemon: Conflict. The container name "/movie-bff-postgres" is already in use by container "4bbeb482356fba03d5a9467ab02bc4c7e812e6e2f23ec9739036da0e15836d13". You have to remove (or rename) that container to be able to reuse that name.
+[CI] docker-compose no pudo arrancar servicios (exit 1). Usando fallback local.
+[CI] Ejecutando fallback: npm ci && npm test
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 569 packages, and audited 570 packages in 18s
+
+101 packages are looking for funding
+  run `npm fund` for details
+
+18 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+> movie-bff@1.0.0 test
+> jest --ci
+
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent building .env in docker: https://dotenvx.com/prebuild
+  console.log
+    [dotenv@17.2.3] injecting env (0) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    🔍 Configuración de conexión:
+
+      at Object.<anonymous> (src/config/database.ts:17:9)
+
+  console.log
+    Host: localhost
+
+      at Object.<anonymous> (src/config/database.ts:18:9)
+
+  console.log
+    Port: 5433
+
+      at Object.<anonymous> (src/config/database.ts:19:9)
+
+  console.log
+    Database: movie_bff
+
+      at Object.<anonymous> (src/config/database.ts:20:9)
+
+  console.log
+    User: postgres
+
+      at Object.<anonymous> (src/config/database.ts:21:9)
+
+  console.log
+
+
+      at Object.<anonymous> (src/config/database.ts:22:9)
+
+  console.log
+    [2025-11-16T20:17:59.363Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-16T20:18:02.327Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-16T20:18:04.536Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-16T20:18:07.675Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-16T20:18:09.638Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-16T20:18:10.576Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-16T20:18:10.847Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-16T20:18:11.329Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-16T20:18:11.700Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+  console.log
+    [2025-11-16T20:18:12.027Z] GET /api/movies - IP: ::ffff:127.0.0.1
+
+      at logger (src/middlewares/logger.ts:12:11)
+
+  console.log
+    🎬 Obteniendo películas populares...
+
+      at getAllMovies (src/controllers/movieController.ts:34:13)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 0)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 3)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 5)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 4)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 2)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 6)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 1)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 8)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 7)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.warn
+    ⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0: connect ECONNREFUSED 127.0.0.1:5433
+
+    [0m [90m 27 |[39m     } [36mcatch[39m (err) {
+     [90m 28 |[39m       [90m// Si hay cualquier error de conexión/consulta a la BD, no fallamos el flujo principal: retornamos 0[39m
+    [31m[1m>[22m[39m[90m 29 |[39m   console[33m.[39mwarn([32m'⚠️ LikeModel.getLikes - fallo en la BD, devolviendo 0:'[39m[33m,[39m (err [36mas[39m any) [33m&&[39m (err [36mas[39m any)[33m.[39mmessage [33m?[39m (err [36mas[39m any)[33m.[39mmessage [33m:[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 30 |[39m       [36mreturn[39m [35m0[39m[33m;[39m
+     [90m 31 |[39m     }
+     [90m 32 |[39m   }[0m
+
+      at LikeModel.getLikes (src/models/likeModel.ts:29:11)
+      at src/controllers/movieController.ts:50:23
+          at async Promise.all (index 9)
+      at getAllMovies (src/controllers/movieController.ts:75:21)
+
+  console.log
+    ✅ 10 películas obtenidas exitosamente
+
+      at getAllMovies (src/controllers/movieController.ts:77:13)
+
+PASS src/__tests__/movies.test.ts (18.685 s)
+  B1: GET /api/movies - Endpoint de películas
+    ✓ Debe responder con status 200 OK (3048 ms)
+    ✓ Debe retornar exactamente 10 películas (2211 ms)
+    ✓ Debe tener la estructura correcta de respuesta (3138 ms)
+    ✓ Cada película debe tener todos los campos obligatorios (1949 ms)
+    ✓ Cada película debe tener imdbId con formato válido (ttXXXXXXX) (950 ms)
+    ✓ El campo likes debe ser un número mayor o igual a 0 (266 ms)
+    ✓ El campo imdbRating debe ser un string con formato válido (484 ms)
+    ✓ El endpoint debe responder en menos de 5 segundos (365 ms)
+    ✓ Debe incluir al menos algunas películas populares conocidas (330 ms)
+    ✓ El campo poster debe ser una URL válida (395 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       10 passed, 10 total
+Snapshots:   0 total
+Time:        19.17 s
+Ran all test suites.
+Post stage
+[Pipeline] junit
+Recording test results
+[Checks API] No suitable checks publisher found.
+[Pipeline] publishHTML
+[htmlpublisher] Archiving HTML reports...
+[htmlpublisher] Archiving at BUILD level /var/jenkins_home/workspace/anch_feature_integrante3-test-b1@2/coverage/lcov-report to Coverage_20Report
+ERROR: Specified HTML directory '/var/jenkins_home/workspace/anch_feature_integrante3-test-b1@2/coverage/lcov-report' does not exist.
+[htmlpublisher] Copying recursive using current thread
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] echo
+🏗️ Compilando TypeScript en entorno reproducible (docker-compose)...
+[Pipeline] sh
++ set -e
++ docker-compose run --rm app npm run build
+time="2025-11-16T20:18:14Z" level=warning msg="The \"GIT_TOKEN\" variable is not set. Defaulting to a blank string."
+ Container movie-bff-postgres  Creating
+Error response from daemon: Conflict. The container name "/movie-bff-postgres" is already in use by container "9fe11ae029ade6ba16aee7e3c460f3a803247516107264e2cf8fe5091a7093c4". You have to remove (or rename) that container to be able to reuse that name.
++ echo [Jenkins] docker-compose falló, compilando localmente
+[Jenkins] docker-compose falló, compilando localmente
++ npm run build
+
+> movie-bff@1.0.0 build
+> tsc
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] echo
+🐳 Construyendo imagen Docker...
+[Pipeline] sh
++ docker build -t movie-bff:feature-integrante3-test-b1-27 .
+/var/jenkins_home/workspace/anch_feature_integrante3-test-b1@2@tmp/durable-522d38ec/script.sh.copy: 1: docker: not found
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push to Docker Hub)
+Stage "Push to Docker Hub" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+Stage "Deploy" skipped due to earlier failure(s)
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+🧹 Limpiando workspace...
+[Pipeline] echo
+❌ Pipeline falló. Revisar logs.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 127
+Finished: FAILURE
