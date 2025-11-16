@@ -15,7 +15,15 @@ services:
     ports:
       - "${DB_PORT:-5433}:5432"
     volumes:
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # NOTE: binding a host file (./database/init.sql) into the postgres container
+      # can fail when docker-compose is executed from inside another container
+      # (Jenkins) because the daemon resolves host paths on the Docker host, not
+      # inside the Jenkins workspace. To make CI runs more robust we remove the
+      # direct file bind here. If DB initialization is required, prefer one of
+      # these options:
+      #  - copy the init script into the Postgres image
+      #  - run initialization SQL with 'docker exec' after the container starts
+      #  - mount the repository from the host where docker-compose is executed
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
