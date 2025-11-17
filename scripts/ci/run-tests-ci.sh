@@ -50,9 +50,31 @@ for i in {1..30}; do
   sleep 1
 done
 
-echo "[CI] Ejecutando tests en contenedor app..."
-docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES run --rm app npm test -- --ci
+echo "[CI] Ejecutando tests en contenedor app (arrancando servicio para preservar artifacts)..."
+# Start the app service in background so we can copy artifacts out afterwards
+docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES up -d app
+APP_CID=$(docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES ps -q app)
+
+if [ -z "$APP_CID" ]; then
+  echo "[CI] No pude obtener el container id del servicio app. Ejecutando fallback local." >&2
+  npm ci
+  npm test -- --ci
+  TEST_EXIT_CODE=$?
+  echo "[CI] Bajando servicios..."
+  docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES down --remove-orphans
+  exit $TEST_EXIT_CODE
+fi
+
+echo "[CI] Container ID del app: $APP_CID"
+
+# Execute tests inside the running app container
+docker exec -u root "$APP_CID" sh -c "npm ci && npm test -- --coverage --ci"
 TEST_EXIT_CODE=$?
+
+echo "[CI] Copiando artifacts desde el contenedor al workspace..."
+# Try to copy junit.xml and coverage; ignore errors if they don't exist
+docker cp "$APP_CID":/app/junit.xml ./junit.xml || true
+docker cp "$APP_CID":/app/coverage ./coverage || true
 
 echo "[CI] Bajando servicios..."
 docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES down --remove-orphans
