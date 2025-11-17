@@ -1,92 +1,37 @@
-version: '3.8'
-
+# docker-compose.yml (formato moderno - sin "version")
 services:
-  # ====================================
-  # Servicio PostgreSQL
-  # ====================================
-  postgres:
-    # Imagen personalizada en Docker Hub con datos inicializados
-    # También disponible: postgres:16-alpine (sin datos)
-    image: wilmerleon/movie-bff-postgres:latest
-    container_name: movie-bff-postgres
-    restart: unless-stopped
-    
-    # Variables de entorno para PostgreSQL
-    environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-1234}
-      POSTGRES_DB: ${DB_NAME:-movie_bff}
-    
-    # Mapeo de puertos
-    ports:
-      - "${DB_PORT:-5433}:5432"
-    
-    # Volúmenes para persistencia y script de inicialización
-    volumes:
-      # Montar script de inicialización (se ejecuta automáticamente)
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      # Persistir datos de la base de datos
-      - postgres_data:/var/lib/postgresql/data
-    
-    # Health check para PostgreSQL
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    
-    # Configuración de logs
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-  # ====================================
-  # Servicio Backend
-  # ====================================
   app:
-    container_name: movie-bff
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    
+    build: .
+    image: movie-bff-app:latest
     ports:
-      - "${PORT:-3000}:3000"
-    
-    environment:
-      - DOCKER_ENV=true
-      - PORT=3000
-      - NODE_ENV=${NODE_ENV:-production}
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=${DB_NAME:-movie_bff}
-      - DB_USER=${DB_USER:-postgres}
-      - DB_PASSWORD=${DB_PASSWORD:-1234}
-      - OMDB_API_KEY=${OMDB_API_KEY:-}
-    
+      - "3000:3000"
     depends_on:
-      postgres:
-        condition: service_healthy
-    
-    restart: unless-stopped
-    
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      - movie-bff-postgres
+    environment:
+      - NODE_ENV=production
 
-# ====================================
-# Volúmenes
-# ====================================
+  movie-bff-postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=moviebff
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    user: root
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # si quieres que Jenkins controle Docker local
+
 volumes:
   postgres_data:
-    driver: local
+  jenkins_home:

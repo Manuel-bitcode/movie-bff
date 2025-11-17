@@ -2,84 +2,57 @@ import { Request, Response } from 'express';
 import { likeModel } from '../models/likeModel';
 import { LikeResponse, TotalLikesResponse } from '../types/movie.types';
 
-/**
- * Obtener cantidad de likes de una película específica
- */
 export const getMovieLikes = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    
-    // Validar que el ID sea válido (formato IMDb: ttXXXXXXX)
+
     if (!id || !id.match(/^tt\d+$/)) {
       res.status(400).json({
         success: false,
-        error: 'ID de IMDb inválido. Debe tener el formato ttXXXXXXX'
+        error: 'ID de IMDb inválido. Debe tener formato ttXXXXXXX'
       });
       return;
     }
 
     const likes = await likeModel.getLikes(id);
-    
+
     const response: LikeResponse = {
       success: true,
-      data: {
-        imdbId: id,
-        likes
-      },
+      data: { imdbId: id, likes },
       message: 'Likes obtenidos correctamente'
     };
 
-    console.log('✅ Enviando respuesta:', JSON.stringify(response));
     res.json(response);
   } catch (error) {
-    console.error('❌ Error en getMovieLikes:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Error al obtener likes de la película'
-    });
+    console.error('Error en getMovieLikes:', error);
+    res.status(500).json({ success: false, error: 'Error al obtener likes' });
   }
 };
 
-/**
- * Incrementar like de una película
- */
 export const incrementLike = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
-    
-    // Validar que el ID sea válido
-    if (!id || !id.match(/^tt\d+$/)) {
-      res.status(400).json({
-        success: false,
-        error: 'ID de IMDb inválido. Debe tener el formato ttXXXXXXX'
-      });
+    const { id: imdbId } = req.params;
+
+    const exists = await likeModel.movieExists(imdbId);
+    if (!exists) {
+      res.status(404).json({ success: false, error: 'Movie not found' });
       return;
     }
 
-    const newLikes = await likeModel.incrementLike(id);
-    
-    const response: LikeResponse = {
-      success: true,
-      data: {
-        imdbId: id,
-        likes: newLikes
-      },
-      message: 'Like incrementado correctamente'
-    };
+    const previousLikes = await likeModel.getLikes(imdbId);
+    const newLikes = await likeModel.incrementLike(imdbId);
 
-    res.json(response);
-  } catch (error) {
-    console.error('Error al incrementar like:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Error al incrementar like de la película'
+    res.status(200).json({
+      success: true,
+      message: 'Like incrementado correctamente',
+      data: { imdbId, likes: newLikes, previousLikes },
+      timestamp: new Date().toISOString()
     });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Internal server error' });
   }
 };
 
-/**
- * Obtener total de likes de todas las películas
- */
 export const getTotalLikes = async (_req: Request, res: Response): Promise<void> => {
   try {
     const totalLikes = await likeModel.getTotalLikes();
