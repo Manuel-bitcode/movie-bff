@@ -19,6 +19,25 @@ set +e
 docker-compose $COMPOSE_FILES up -d postgres
 DC_EXIT=$?
 set -e
+COMPOSE_FILES="-f docker-compose.yml -f docker-compose.ci.yml"
+
+# Use a per-build compose project name to avoid container name collisions in
+# shared Docker daemon environments (Jenkins). Prefer BUILD_NUMBER (Jenkins)
+# when available; otherwise fall back to COMPOSE_PROJECT_NAME or a timestamp.
+if [ -n "${BUILD_NUMBER:-}" ]; then
+  PROJECT_NAME="moviebff_ci_${BUILD_NUMBER}"
+else
+  PROJECT_NAME="${COMPOSE_PROJECT_NAME:-moviebff_ci_$(date +%s)}"
+fi
+export COMPOSE_PROJECT_NAME="$PROJECT_NAME"
+
+# Ensure we always try to bring down the services created by this script.
+trap 'set +e; docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES down --remove-orphans; set -e' EXIT
+
+set +e
+docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES up -d postgres
+DC_EXIT=$?
+set -e
 
 if [ "$DC_EXIT" -ne 0 ]; then
   echo "[CI] docker-compose no pudo arrancar servicios (exit $DC_EXIT). Usando fallback local." >&2
@@ -30,17 +49,17 @@ fi
 
 echo "[CI] Esperando a que Postgres esté listo..."
 for i in {1..30}; do
-  if docker-compose $COMPOSE_FILES exec -T postgres pg_isready -U postgres >/dev/null 2>&1; then
+  if docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES exec -T postgres pg_isready -U postgres >/dev/null 2>&1; then
     break
   fi
   sleep 1
 done
 
 echo "[CI] Ejecutando tests en contenedor app..."
-docker-compose $COMPOSE_FILES run --rm app npm test -- --ci
+docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES run --rm app npm test -- --ci
 TEST_EXIT_CODE=$?
 
 echo "[CI] Bajando servicios..."
-docker-compose $COMPOSE_FILES down
+docker-compose -p "$COMPOSE_PROJECT_NAME" $COMPOSE_FILES down --remove-orphans
 
 exit $TEST_EXIT_CODE
