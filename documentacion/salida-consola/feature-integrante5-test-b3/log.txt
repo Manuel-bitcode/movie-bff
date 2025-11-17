@@ -1,0 +1,478 @@
+Branch indexing
+Connecting to https://api.github.com using PaolaRoa/****** (GitHub Token (usuario + PAT))
+Jenkins-Imposed API Limiter: Current quota for Github API usage has 44 remaining (1 over budget). Next quota of 60 in 46 min. Sleeping for 4 min 26 sec.
+Jenkins is attempting to evenly distribute GitHub API requests. To configure a different rate limiting strategy, such as having Jenkins restrict GitHub API requests only when near or above the GitHub rate limit, go to "GitHub API usage" under "Configure System" in the Jenkins settings.
+Jenkins-Imposed API Limiter: Still sleeping, now only 1 min 24 sec remaining.
+Jenkins-Imposed API Limiter: Current quota for Github API usage has 41 remaining (1 over budget). Next quota of 60 in 42 min. Sleeping for 4 min 35 sec.
+Jenkins is attempting to evenly distribute GitHub API requests. To configure a different rate limiting strategy, such as having Jenkins restrict GitHub API requests only when near or above the GitHub rate limit, go to "GitHub API usage" under "Configure System" in the Jenkins settings.
+Jenkins-Imposed API Limiter: Still sleeping, now only 1 min 32 sec remaining.
+Jenkins-Imposed API Limiter: Current quota for Github API usage has 37 remaining (2 over budget). Next quota of 60 in 37 min. Sleeping for 6 min 8 sec.
+Jenkins is attempting to evenly distribute GitHub API requests. To configure a different rate limiting strategy, such as having Jenkins restrict GitHub API requests only when near or above the GitHub rate limit, go to "GitHub API usage" under "Configure System" in the Jenkins settings.
+Jenkins-Imposed API Limiter: Still sleeping, now only 3 min 5 sec remaining.
+Jenkins-Imposed API Limiter: Still sleeping, now only 4.3 sec remaining.
+Obtained Jenkinsfile from 7da076337f1237facb0c8bdeb4a776c444f94132
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/jobs/movie-bff-pipeline/branches/feature-inte.14rdub.nte5-test-b3/workspace
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: NONE
+using credential github-token
+ > git rev-parse --resolve-git-dir /var/jenkins_home/jobs/movie-bff-pipeline/branches/feature-inte.14rdub.nte5-test-b3/workspace/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+using GIT_ASKPASS to set credentials GitHub Token (usuario + PAT)
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/feature/integrante5-test-b3:refs/remotes/origin/feature/integrante5-test-b3 # timeout=10
+Checking out Revision 7da076337f1237facb0c8bdeb4a776c444f94132 (feature/integrante5-test-b3)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 7da076337f1237facb0c8bdeb4a776c444f94132 # timeout=10
+Commit message: "modify jenkinsfile"
+ > git rev-list --no-walk 5d3dc6a3dafee60b9e9d3e8bec2caef8d14567f4 # timeout=10
+
+Could not update commit status. Message: {
+  "message": "Requires authentication",
+  "documentation_url": "https://docs.github.com/rest",
+  "status": "401"
+}
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Tool Install)
+[Pipeline] tool
+$ /var/jenkins_home/tools/jenkins.plugins.nodejs.tools.NodeJSInstallation/NodeJS-20/bin/npm install -g npm@latest
+
+changed 13 packages in 17s
+
+28 packages are looking for funding
+  run `npm fund` for details
+[Pipeline] envVarsForTool
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🔄 Clonando repositorio...
+[Pipeline] checkout
+The recommended git tool is: NONE
+using credential github-token
+ > git rev-parse --resolve-git-dir /var/jenkins_home/jobs/movie-bff-pipeline/branches/feature-inte.14rdub.nte5-test-b3/workspace/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/Manuel-bitcode/movie-bff.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/Manuel-bitcode/movie-bff.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+using GIT_ASKPASS to set credentials GitHub Token (usuario + PAT)
+ > git fetch --no-tags --force --progress -- https://github.com/Manuel-bitcode/movie-bff.git +refs/heads/feature/integrante5-test-b3:refs/remotes/origin/feature/integrante5-test-b3 # timeout=10
+Checking out Revision 7da076337f1237facb0c8bdeb4a776c444f94132 (feature/integrante5-test-b3)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 7da076337f1237facb0c8bdeb4a776c444f94132 # timeout=10
+Commit message: "modify jenkinsfile"
+Jenkins-Imposed API Limiter: Current quota for Github API usage has 34 remaining (1 over budget). Next quota of 60 in 31 min. Sleeping for 4 min 15 sec.
+Jenkins is attempting to evenly distribute GitHub API requests. To configure a different rate limiting strategy, such as having Jenkins restrict GitHub API requests only when near or above the GitHub rate limit, go to "GitHub API usage" under "Configure System" in the Jenkins settings.
+Jenkins-Imposed API Limiter: Still sleeping, now only 1 min 13 sec remaining.
+Jenkins-Imposed API Limiter: Current quota for Github API usage has 30 remaining (2 over budget). Next quota of 60 in 26 min. Sleeping for 6 min 8 sec.
+Jenkins is attempting to evenly distribute GitHub API requests. To configure a different rate limiting strategy, such as having Jenkins restrict GitHub API requests only when near or above the GitHub rate limit, go to "GitHub API usage" under "Configure System" in the Jenkins settings.
+Jenkins-Imposed API Limiter: Still sleeping, now only 3 min 5 sec remaining.
+Jenkins-Imposed API Limiter: Still sleeping, now only 3.9 sec remaining.
+
+Could not update commit status. Message: {
+  "message": "Requires authentication",
+  "documentation_url": "https://docs.github.com/rest",
+  "status": "401"
+}
+
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+📦 Instalando dependencias...
+[Pipeline] sh
++ npm ci
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 522 packages, and audited 523 packages in 14s
+
+83 packages are looking for funding
+  run `npm fund` for details
+
+19 moderate severity vulnerabilities
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Lint)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🔍 Ejecutando linter...
+[Pipeline] sh
++ npm run lint
+
+> movie-bff@1.0.0 lint
+> eslint . --ext .ts
+
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🧪 Ejecutando tests...
+[Pipeline] sh
++ DB_HOST=host.docker.internal npm test -- --coverage --ci
+
+> movie-bff@1.0.0 test
+> jest --coverage --ci
+
+  console.log
+    [dotenv@17.2.3] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.error
+    ❌ Error en el pool de PostgreSQL: error: terminating connection due to administrator command
+        at Parser.parseErrorMessage (/var/jenkins_home/jobs/movie-bff-pipeline/branches/feature-inte.14rdub.nte5-test-b3/workspace/node_modules/pg-protocol/src/parser.ts:369:69)
+        at Parser.handlePacket (/var/jenkins_home/jobs/movie-bff-pipeline/branches/feature-inte.14rdub.nte5-test-b3/workspace/node_modules/pg-protocol/src/parser.ts:187:21)
+        at Parser.parse (/var/jenkins_home/jobs/movie-bff-pipeline/branches/feature-inte.14rdub.nte5-test-b3/workspace/node_modules/pg-protocol/src/parser.ts:102:30)
+        at Socket.<anonymous> (/var/jenkins_home/jobs/movie-bff-pipeline/branches/feature-inte.14rdub.nte5-test-b3/workspace/node_modules/pg-protocol/src/index.ts:7:48)
+        at Socket.emit (node:events:524:28)
+        at addChunk (node:internal/streams/readable:561:12)
+        at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+        at Socket.Readable.push (node:internal/streams/readable:392:5)
+        at TCP.onStreamRead (node:internal/stream_base_commons:191:23) {
+      length: 116,
+      severity: 'FATAL',
+      code: '57P01',
+      detail: undefined,
+      hint: undefined,
+      position: undefined,
+      internalPosition: undefined,
+      internalQuery: undefined,
+      where: undefined,
+      schema: undefined,
+      table: undefined,
+      column: undefined,
+      dataType: undefined,
+      constraint: undefined,
+      file: 'postgres.c',
+      line: '3286',
+      routine: 'ProcessInterrupts',
+      client: Client {
+        _events: [Object: null prototype] { error: [Function (anonymous)] },
+        _eventsCount: 1,
+        _maxListeners: undefined,
+        connectionParameters: ConnectionParameters {
+          user: 'postgres',
+          database: 'movie_bff',
+          port: 5432,
+          host: 'host.docker.internal',
+          binary: false,
+          options: undefined,
+          ssl: false,
+          client_encoding: '',
+          replication: undefined,
+          isDomainSocket: false,
+          application_name: undefined,
+          fallback_application_name: undefined,
+          statement_timeout: false,
+          lock_timeout: false,
+          idle_in_transaction_session_timeout: false,
+          query_timeout: false,
+          connect_timeout: 5
+        },
+        user: 'postgres',
+        database: 'movie_bff',
+        port: 5432,
+        host: 'host.docker.internal',
+        replication: undefined,
+        _Promise: [Function: Promise],
+        _types: TypeOverrides { _types: [Object], text: {}, binary: {} },
+        _ending: true,
+        _ended: false,
+        _connecting: false,
+        _connected: true,
+        _connectionError: false,
+        _queryable: false,
+        enableChannelBinding: false,
+        connection: Connection {
+          _events: [Object: null prototype],
+          _eventsCount: 23,
+          _maxListeners: undefined,
+          stream: [Socket],
+          _keepAlive: false,
+          _keepAliveInitialDelayMillis: 0,
+          lastBuffer: false,
+          parsedStatements: {},
+          ssl: false,
+          _ending: true,
+          _emitMessage: false,
+          _connecting: true,
+          [Symbol(shapeMode)]: false,
+          [Symbol(kCapture)]: false
+        },
+        queryQueue: [],
+        binary: false,
+        processID: 46,
+        secretKey: 331537707,
+        ssl: false,
+        _connectionTimeoutMillis: 5000,
+        _connectionCallback: null,
+        connectionTimeoutHandle: Timeout {
+          _idleTimeout: -1,
+          _idlePrev: null,
+          _idleNext: null,
+          _idleStart: 9753,
+          _onTimeout: null,
+          _timerArgs: undefined,
+          _repeat: null,
+          _destroyed: true,
+          [Symbol(refed)]: false,
+          [Symbol(kHasPrimitive)]: false,
+          [Symbol(asyncId)]: 681,
+          [Symbol(triggerId)]: 0
+        },
+        saslSession: null,
+        release: [Function (anonymous)],
+        activeQuery: null,
+        readyForQuery: true,
+        hasExecuted: true,
+        _poolUseCount: 34,
+        [Symbol(shapeMode)]: false,
+        [Symbol(kCapture)]: false
+      }
+    }
+
+    [0m [90m 26 |[39m
+     [90m 27 |[39m pool[33m.[39mon([32m'error'[39m[33m,[39m (err[33m:[39m [33mError[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 28 |[39m   console[33m.[39merror([32m'❌ Error en el pool de PostgreSQL:'[39m[33m,[39m err)[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 29 |[39m })[33m;[39m
+     [90m 30 |[39m
+     [90m 31 |[39m [36mconst[39m delay [33m=[39m (ms[33m:[39m number) [33m=>[39m [36mnew[39m [33mPromise[39m(resolve [33m=>[39m setTimeout(resolve[33m,[39m ms))[33m;[39m[0m
+
+      at BoundPool.error (src/config/database.ts:28:11)
+      at Client.idleListener (node_modules/pg-pool/index.js:62:10)
+      at Client._handleErrorEvent (node_modules/pg/lib/client.js:350:10)
+      at Client._handleErrorMessage (node_modules/pg/lib/client.js:361:12)
+      at node_modules/pg/lib/connection.js:116:12
+      at Parser.parse (node_modules/pg-protocol/src/parser.ts:103:9)
+      at Socket.<anonymous> (node_modules/pg-protocol/src/index.ts:7:48)
+
+PASS src/tests/database.test.ts (14.952 s)
+  Database connectivity and persistence
+    ✓ Conexion exitosa usando pg_isready (662 ms)
+    ✓ getTotalLikes retorna suma correcta (364 ms)
+    ✓ Persistencia tras reinicio de contenedor (4686 ms)
+    ✓ Multiples inserts concurrentes actualizan correctamente (523 ms)
+    ✓ Manejo de errores de conexion y timeout respetado (320 ms)
+
+---------------|---------|----------|---------|---------|-------------------
+File           | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+---------------|---------|----------|---------|---------|-------------------
+All files      |   81.66 |    70.83 |   86.66 |   84.48 |                   
+ config        |   74.35 |    73.91 |   66.66 |   78.37 |                   
+  database.ts  |   74.35 |    73.91 |   66.66 |   78.37 | 51-64             
+ models        |   95.23 |        0 |     100 |   95.23 |                   
+  likeModel.ts |   95.23 |        0 |     100 |   95.23 | 31                
+---------------|---------|----------|---------|---------|-------------------
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+Snapshots:   0 total
+Time:        15.531 s
+Ran all test suites.
+Post stage
+[Pipeline] junit
+Recording test results
+[Checks API] No suitable checks publisher found.
+[Pipeline] publishHTML
+[htmlpublisher] Archiving HTML reports...
+[htmlpublisher] Archiving at BUILD level /var/jenkins_home/jobs/movie-bff-pipeline/branches/feature-inte.14rdub.nte5-test-b3/workspace/coverage/lcov-report to Coverage_20Report
+[htmlpublisher] Copying recursive using current thread
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🏗️ Compilando TypeScript...
+[Pipeline] sh
++ npm run build
+
+> movie-bff@1.0.0 build
+> tsc
+
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] tool
+[Pipeline] envVarsForTool
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+🐳 Construyendo imagen Docker...
+[Pipeline] script
+[Pipeline] {
+Did you forget the `def` keyword? WorkflowScript seems to be setting a field named safeTag (to a value of type String) which could lead to memory leaks or other issues.
+[Pipeline] echo
+🔧 Tag Docker saneado: feature-integrante5-test-b3-20
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker build -t movie-bff:feature-integrante5-test-b3-20 .
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.27kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/node:20.12.2-alpine
+#2 DONE 2.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 482B done
+#3 DONE 0.0s
+
+#4 [1/7] FROM docker.io/library/node:20.12.2-alpine@sha256:7a91aa397f2e2dfbfcdad2e2d72599f374e0b0172be1d86eeb73f1d33f36a4b2
+#4 resolve docker.io/library/node:20.12.2-alpine@sha256:7a91aa397f2e2dfbfcdad2e2d72599f374e0b0172be1d86eeb73f1d33f36a4b2 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 24.84MB 1.9s done
+#5 DONE 1.9s
+
+#6 [4/7] COPY package*.json ./
+#6 CACHED
+
+#7 [2/7] RUN apk add --no-cache wget
+#7 CACHED
+
+#8 [3/7] WORKDIR /app
+#8 CACHED
+
+#9 [5/7] RUN npm install
+#9 CACHED
+
+#10 [6/7] COPY . .
+#10 DONE 0.3s
+
+#11 [7/7] RUN npm run build
+#11 2.611 
+#11 2.611 > movie-bff@1.0.0 build
+#11 2.611 > tsc
+#11 2.611 
+#11 DONE 9.1s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 1.6s done
+#12 exporting manifest sha256:da25b82ed3c46f40d06187fc1423c21fb9e4d505a3c003e9740eff6459e82bea 0.0s done
+#12 exporting config sha256:d65aa3bd03ea64e9a810eee6f65b8e308f87d6600fa0b3a98e74ac6e93e7ed98 0.0s done
+#12 exporting attestation manifest sha256:37b148d17245514ff1a96688f3b02c423122a9a39528b61f6367949c2eefb3af 0.0s done
+#12 exporting manifest list sha256:a361a2226018e1da60a43f9f9f8c249d35028b044f0e06fe2515a4d6c4179b12 0.0s done
+#12 naming to docker.io/library/movie-bff:feature-integrante5-test-b3-20 done
+#12 unpacking to docker.io/library/movie-bff:feature-integrante5-test-b3-20
+#12 unpacking to docker.io/library/movie-bff:feature-integrante5-test-b3-20 0.4s done
+#12 DONE 2.1s
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push to Docker Hub)
+Stage "Push to Docker Hub" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+Stage "Deploy" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] cleanWs
+[WS-CLEANUP] Deleting project workspace...
+[WS-CLEANUP] Deferred wipeout is used...
+[WS-CLEANUP] done
+[Pipeline] echo
+✅ Pipeline ejecutado exitosamente
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+
+Could not update commit status. Message: {
+  "message": "Requires authentication",
+  "documentation_url": "https://docs.github.com/rest",
+  "status": "401"
+}
+
+Finished: SUCCESS
