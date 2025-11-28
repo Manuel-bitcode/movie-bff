@@ -68,7 +68,7 @@ jobs:
         run: |
           echo "🧪 Ejecutando tests..."
           npm test || echo "⚠️  Tests no configurados todavía"
-        continue-on-error: true
+        continue-on-error: false
 
       - name: 🏗️ Build TypeScript
         run: |
