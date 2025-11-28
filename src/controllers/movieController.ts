@@ -47,7 +47,7 @@ export const getAllMovies = async (
         }
 
         // 2. Obtener likes de la base de datos
-        const likes = await likeModel.getLikes(imdbId);
+        const likes = await likeModel.getLikesByImdbId(imdbId);
 
         // 3. Construir objeto de película con formato para frontend
         return {

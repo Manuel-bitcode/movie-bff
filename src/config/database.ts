@@ -1,29 +1,18 @@
-import { Pool } from 'pg';
+import { Pool, PoolClient } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Detectar si estamos corriendo dentro de Docker
 const isDocker = process.env.DOCKER_ENV === 'true';
-
-// Definir host dinámicamente
-const DB_HOST = isDocker ? process.env.DB_HOST || 'postgres' : process.env.DB_HOST || 'localhost';
-const DB_PORT = parseInt(process.env.DB_PORT || (isDocker ? '5432' : '5433'), 10);
+const DB_HOST = process.env.DB_HOST || (isDocker ? 'postgres' : 'localhost');
+const DB_PORT = parseInt(process.env.DB_PORT || '5432', 10);
 const DB_NAME = process.env.DB_NAME || 'movie_bff';
 const DB_USER = process.env.DB_USER || 'postgres';
-const DB_PASSWORD = process.env.DB_PASSWORD || 'postgres';
+const DB_PASSWORD = process.env.DB_PASSWORD || '1234';
+const MAX_CONNECTION_RETRIES = parseInt(process.env.DB_CONN_RETRIES || '5', 10);
+const CONNECTION_TIMEOUT_MS = parseInt(process.env.DB_CONN_TIMEOUT_MS || '5000', 10);
+const RETRY_DELAY_MS = parseInt(process.env.DB_CONN_RETRY_DELAY_MS || '1000', 10);
 
-// Debug
-console.log('🔍 Configuración de conexión:');
-console.log(`Host: ${DB_HOST}`);
-console.log(`Port: ${DB_PORT}`);
-console.log(`Database: ${DB_NAME}`);
-console.log(`User: ${DB_USER}`);
-console.log('');
-
-/**
- * Configuración de conexión a PostgreSQL
- */
 const pool = new Pool({
   host: DB_HOST,
   port: DB_PORT,
@@ -32,16 +21,56 @@ const pool = new Pool({
   password: DB_PASSWORD,
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
-
-pool.on('connect', () => {
-  console.log('✅ Conectado a PostgreSQL');
+  connectionTimeoutMillis: CONNECTION_TIMEOUT_MS,
 });
 
 pool.on('error', (err: Error) => {
   console.error('❌ Error en el pool de PostgreSQL:', err);
-  process.exit(-1);
 });
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function testClient(client: PoolClient): Promise<void> {
+  await client.query('SELECT 1');
+}
+
+export async function getConnectionWithRetry(
+  retries = MAX_CONNECTION_RETRIES,
+  delayMs = RETRY_DELAY_MS,
+): Promise<PoolClient> {
+  let attempt = 0;
+  let lastError: unknown;
+
+  while (attempt < retries) {
+    try {
+      const client = await pool.connect();
+      try {
+        await testClient(client);
+        return client;
+      } catch (validationError) {
+        client.release();
+        throw validationError;
+      }
+    } catch (error) {
+      lastError = error;
+      attempt += 1;
+      if (attempt >= retries) {
+        break;
+      }
+      await delay(delayMs);
+    }
+  }
+
+  throw new Error(
+    `Unable to acquire a PostgreSQL connection after ${retries} attempts. Last error: ${
+      lastError instanceof Error ? lastError.message : String(lastError)
+    }`,
+  );
+}
+
+export async function ensureDatabaseConnection(): Promise<void> {
+  const client = await getConnectionWithRetry();
+  client.release();
+}
 
 export default pool;

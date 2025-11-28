@@ -8,7 +8,6 @@ services:
     # Imagen personalizada en Docker Hub con datos inicializados
     # También disponible: postgres:16-alpine (sin datos)
     image: wilmerleon/movie-bff-postgres:latest
-    container_name: movie-bff-postgres
     restart: unless-stopped
     
     # Variables de entorno para PostgreSQL
@@ -19,12 +18,12 @@ services:
     
     # Mapeo de puertos
     ports:
-      - "${DB_PORT:-5433}:5432"
+      - "${DB_PORT:-5432}:5432"
     
     # Volúmenes para persistencia y script de inicialización
     volumes:
-      # Montar script de inicialización (se ejecuta automáticamente)
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Montar scripts de inicialización (se ejecutan automáticamente)
+      - ./database:/docker-entrypoint-initdb.d
       # Persistir datos de la base de datos
       - postgres_data:/var/lib/postgresql/data
     
@@ -46,7 +45,6 @@ services:
   # Servicio Backend
   # ====================================
   app:
-    container_name: movie-bff
     build: 
       context: .
       dockerfile: Dockerfile
