@@ -67,8 +67,13 @@ jobs:
       - name: 🧪 Tests
         run: |
           echo "🧪 Ejecutando tests..."
-          npm test || echo "⚠️  Tests no configurados todavía"
+          npx jest --coverage
         continue-on-error: false
+
+      - name: 📤 Subir resultados a Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: 🏗️ Build TypeScript
         run: |

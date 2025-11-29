@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="36" failures="0" errors="0" time="0.815">
+  <testsuite name="MovieController" errors="0" failures="0" skipped="0" timestamp="2025-11-29T02:23:24" time="0.567" tests="5">
+    <testcase classname="MovieController getAllMovies debe retornar lista de peliculas con datos de OMDB y likes" name="MovieController getAllMovies debe retornar lista de peliculas con datos de OMDB y likes" time="0.002">
+    </testcase>
+    <testcase classname="MovieController getAllMovies debe filtrar peliculas que OMDB no encuentra" name="MovieController getAllMovies debe filtrar peliculas que OMDB no encuentra" time="0">
+    </testcase>
+    <testcase classname="MovieController getAllMovies debe manejar errores de axios y continuar con otras peliculas" name="MovieController getAllMovies debe manejar errores de axios y continuar con otras peliculas" time="0.001">
+    </testcase>
+    <testcase classname="MovieController getAllMovies debe loggear error cuando falla obteniendo una pelicula" name="MovieController getAllMovies debe loggear error cuando falla obteniendo una pelicula" time="0">
+    </testcase>
+    <testcase classname="MovieController getAllMovies debe incluir likes en 0 cuando no hay likes en BD" name="MovieController getAllMovies debe incluir likes en 0 cuando no hay likes en BD" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="LikeController" errors="0" failures="0" skipped="0" timestamp="2025-11-29T02:23:25" time="0.026" tests="9">
+    <testcase classname="LikeController getMovieLikes debe retornar likes de una pelicula" name="LikeController getMovieLikes debe retornar likes de una pelicula" time="0.001">
+    </testcase>
+    <testcase classname="LikeController getMovieLikes debe retornar error 400 cuando id es invalido" name="LikeController getMovieLikes debe retornar error 400 cuando id es invalido" time="0">
+    </testcase>
+    <testcase classname="LikeController getMovieLikes debe retornar error 400 cuando id no esta presente" name="LikeController getMovieLikes debe retornar error 400 cuando id no esta presente" time="0.001">
+    </testcase>
+    <testcase classname="LikeController getMovieLikes debe manejar errores de base de datos" name="LikeController getMovieLikes debe manejar errores de base de datos" time="0">
+    </testcase>
+    <testcase classname="LikeController incrementLike debe incrementar likes correctamente" name="LikeController incrementLike debe incrementar likes correctamente" time="0">
+    </testcase>
+    <testcase classname="LikeController incrementLike debe retornar error 400 cuando id es invalido" name="LikeController incrementLike debe retornar error 400 cuando id es invalido" time="0">
+    </testcase>
+    <testcase classname="LikeController incrementLike debe manejar errores al incrementar" name="LikeController incrementLike debe manejar errores al incrementar" time="0.001">
+    </testcase>
+    <testcase classname="LikeController getTotalLikes debe retornar el total de likes" name="LikeController getTotalLikes debe retornar el total de likes" time="0">
+    </testcase>
+    <testcase classname="LikeController getTotalLikes debe manejar errores al obtener total" name="LikeController getTotalLikes debe manejar errores al obtener total" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Database connectivity and persistence" errors="0" failures="0" skipped="0" timestamp="2025-11-29T02:23:25" time="0.024" tests="5">
+    <testcase classname="Database connectivity and persistence Conexion exitosa sin Docker" name="Database connectivity and persistence Conexion exitosa sin Docker" time="0">
+    </testcase>
+    <testcase classname="Database connectivity and persistence getTotalLikes retorna suma correcta" name="Database connectivity and persistence getTotalLikes retorna suma correcta" time="0">
+    </testcase>
+    <testcase classname="Database connectivity and persistence Persistencia de datos en memoria" name="Database connectivity and persistence Persistencia de datos en memoria" time="0">
+    </testcase>
+    <testcase classname="Database connectivity and persistence Multiples inserts concurrentes actualizan correctamente" name="Database connectivity and persistence Multiples inserts concurrentes actualizan correctamente" time="0.001">
+    </testcase>
+    <testcase classname="Database connectivity and persistence Manejo de errores de conexion y timeout respetado" name="Database connectivity and persistence Manejo de errores de conexion y timeout respetado" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="Logger Middleware" errors="0" failures="0" skipped="0" timestamp="2025-11-29T02:23:25" time="0.017" tests="4">
+    <testcase classname="Logger Middleware debe loggear informacion de la peticion" name="Logger Middleware debe loggear informacion de la peticion" time="0.001">
+    </testcase>
+    <testcase classname="Logger Middleware debe usar socket.remoteAddress cuando ip no esta disponible" name="Logger Middleware debe usar socket.remoteAddress cuando ip no esta disponible" time="0.002">
+    </testcase>
+    <testcase classname="Logger Middleware debe incluir timestamp en formato ISO" name="Logger Middleware debe incluir timestamp en formato ISO" time="0">
+    </testcase>
+    <testcase classname="Logger Middleware debe llamar a next para continuar la cadena de middlewares" name="Logger Middleware debe llamar a next para continuar la cadena de middlewares" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="LikeModel" errors="0" failures="0" skipped="0" timestamp="2025-11-29T02:23:25" time="0.018" tests="7">
+    <testcase classname="LikeModel getTotalLikes debe retornar el total de likes" name="LikeModel getTotalLikes debe retornar el total de likes" time="0.001">
+    </testcase>
+    <testcase classname="LikeModel getTotalLikes debe retornar 0 cuando no hay likes" name="LikeModel getTotalLikes debe retornar 0 cuando no hay likes" time="0">
+    </testcase>
+    <testcase classname="LikeModel getLikesByImdbId debe retornar likes de una pelicula especifica" name="LikeModel getLikesByImdbId debe retornar likes de una pelicula especifica" time="0">
+    </testcase>
+    <testcase classname="LikeModel getLikesByImdbId debe retornar 0 cuando la pelicula no existe" name="LikeModel getLikesByImdbId debe retornar 0 cuando la pelicula no existe" time="0">
+    </testcase>
+    <testcase classname="LikeModel createLikeEntry debe crear entrada de likes para una pelicula" name="LikeModel createLikeEntry debe crear entrada de likes para una pelicula" time="0">
+    </testcase>
+    <testcase classname="LikeModel incrementLike debe incrementar likes y retornar nuevo valor" name="LikeModel incrementLike debe incrementar likes y retornar nuevo valor" time="0">
+    </testcase>
+    <testcase classname="LikeModel withClient error handling debe liberar cliente incluso si hay error" name="LikeModel withClient error handling debe liberar cliente incluso si hay error" time="0.004">
+    </testcase>
+  </testsuite>
+  <testsuite name="ValidateImdbId Middleware" errors="0" failures="0" skipped="0" timestamp="2025-11-29T02:23:25" time="0.015" tests="6">
+    <testcase classname="ValidateImdbId Middleware debe retornar error 400 cuando imdbId no esta presente" name="ValidateImdbId Middleware debe retornar error 400 cuando imdbId no esta presente" time="0.001">
+    </testcase>
+    <testcase classname="ValidateImdbId Middleware debe retornar error 400 cuando formato de imdbId es invalido" name="ValidateImdbId Middleware debe retornar error 400 cuando formato de imdbId es invalido" time="0">
+    </testcase>
+    <testcase classname="ValidateImdbId Middleware debe retornar error 400 cuando imdbId tiene menos de 7 digitos" name="ValidateImdbId Middleware debe retornar error 400 cuando imdbId tiene menos de 7 digitos" time="0">
+    </testcase>
+    <testcase classname="ValidateImdbId Middleware debe llamar a next cuando imdbId es valido con 7 digitos" name="ValidateImdbId Middleware debe llamar a next cuando imdbId es valido con 7 digitos" time="0">
+    </testcase>
+    <testcase classname="ValidateImdbId Middleware debe llamar a next cuando imdbId es valido con mas de 7 digitos" name="ValidateImdbId Middleware debe llamar a next cuando imdbId es valido con mas de 7 digitos" time="0">
+    </testcase>
+    <testcase classname="ValidateImdbId Middleware debe validar formato IMDb real" name="ValidateImdbId Middleware debe validar formato IMDb real" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>
