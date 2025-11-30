@@ -453,4 +453,5 @@ Este proyecto está bajo la licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 
 - **Manuel Martinez** - Desarrollo inicial y arquitectura
 - **Wílmer E. León** - Patrones de diseño Back-end y base de datos
+- **Natalia Araujo Martínez** - Creación de endpoints (GET, POST) 
 
